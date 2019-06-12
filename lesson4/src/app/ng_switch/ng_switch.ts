@@ -16,7 +16,7 @@ import { BrowserModule } from '@angular/platform-browser';
         <li *ngSwitchCase="2">Second choice</li>
         <li *ngSwitchCase="3">Third choice</li>
         <li *ngSwitchCase="4">Fourth choice</li>
-        <li *ngSwitchCase="2">Second choice, again</li>
+        <li *ngSwitchCase="2">Second choice, again！</li>
         <li *ngSwitchDefault>Default choice</li>
       </ul>
     </div>

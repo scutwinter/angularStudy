@@ -6,6 +6,8 @@
 
   import { NgSwitchSampleApp } from './ng_switch/ng_switch';
   import { NgSwitchSampleAppModule } from './ng_switch/ng_switch';
+  import { NgStyleSampleApp } from './ng_style/ng_style';
+  import { NgStyleSampleAppModule } from './ng_style/ng_style';
 
   @NgModule({
   declarations: [
@@ -14,10 +16,11 @@
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgSwitchSampleAppModule
+    NgSwitchSampleAppModule,
+    NgStyleSampleAppModule,
   ],
   providers: [],
-  bootstrap: [NgSwitchSampleApp]
+  bootstrap: [NgSwitchSampleApp, NgStyleSampleApp]
 })
 export class AppModule { }
 

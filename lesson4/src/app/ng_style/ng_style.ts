@@ -24,6 +24,9 @@ import { BrowserModule } from '@angular/platform-browser';
         red text
       </span>
     </div>
+    
+    
+    
     <div>
       <input type="text" name="color" value="{{color}}" #colorinput>
     </div>

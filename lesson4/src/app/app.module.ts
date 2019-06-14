@@ -9,6 +9,9 @@
   import { NgStyleSampleApp } from './ng_style/ng_style';
   import { NgStyleSampleAppModule } from './ng_style/ng_style';
 
+  import { NgClassSampleApp} from './ng_class/ng_class';
+  import { NgClassSampleAppModule} from './ng_class/ng_class';
+
   @NgModule({
   declarations: [
     AppComponent
@@ -18,9 +21,10 @@
     AppRoutingModule,
     NgSwitchSampleAppModule,
     NgStyleSampleAppModule,
+    NgClassSampleAppModule,
   ],
   providers: [],
-  bootstrap: [NgSwitchSampleApp, NgStyleSampleApp]
+  bootstrap: [NgSwitchSampleApp, NgStyleSampleApp , NgClassSampleApp]
 })
 export class AppModule { }
 

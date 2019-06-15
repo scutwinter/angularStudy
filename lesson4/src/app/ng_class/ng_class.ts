@@ -9,9 +9,24 @@ import { BrowserModule } from '@angular/platform-browser';
       `<div [ngClass]="{bordered: false}">This is never bordered</div>
        <div [ngClass]="{bordered: true}">This is always bordered</div>
        <div [ngClass]="{bordered: isBordered}">Using object literal .Bordered {{ isBordered ? "ON":"OFF"}}</div>
-       <button (click)="changeBordered()">changeBordered</button>
+       <button class="ui button primary" (click)="changeBordered()">changeBordered</button>
        <div [ngClass]="classesObj">Using object var.Border {{ classesObj.bordered ? "ON":"OFF"}}</div>
-       <div class="base" [ngClass]="['blue','round']" ></div>
+       <div class="base" [ngClass]="['blue','round']" >this will always have a blue background and round corners</div>
+       <div class="ui input" >
+         <input type="checkbox" [checked]="classList.indexOf('blue')>1"
+         (click)="changeCheced('blue')">
+         <span>Blue</span>
+       </div>
+        <div class="ui input" >
+          <input type="checkbox" [checked]="classList.indexOf('round')>1"
+                 (click)="changeCheced('round')">
+          <span>Round</span>
+        </div>
+       <div class="base" [ngClass]="classList">
+         This is {{classList.indexOf('blue') > -1 ? "" : "Not"}} blue and
+         {{ classList.indexOf('round') > -1 ? "" : "Not"}} round
+       </div>
+
   `,
   styleUrls: ['./ng_class_style.css']
 })
@@ -27,6 +42,8 @@ export class NgClassSampleApp {
     this.classesObj = {
       bordered: this.isBordered
     };
+    this.classList=['blue','round'];
+
 
   }
   changeBordered(): void {
@@ -39,6 +56,15 @@ export class NgClassSampleApp {
     this.classesObj = {
       bordered: this.isBordered
     };
+  }
+  changeCheced(cssString: string ): void {
+    // tslint:disable-next-line:prefer-const
+    let pos: number = this.classList.indexOf(cssString);
+    if (pos > -1) {
+      this.classList.splice(pos, 1);
+    } else {
+      this.classList.push(cssString);
+    }
   }
 
 }

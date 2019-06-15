@@ -27,13 +27,13 @@ import { BrowserModule } from '@angular/platform-browser';
     
     
     
-    <div>
+    <div class="ui input" >
       <input type="text" name="color" value="{{color}}" #colorinput>
     </div>
-    <div>
-      <input type="text" name="fontSize" value="{{fontSize}}" #fontinput>
+    <div class="ui input" >
+      <input  type="text" name="fontSize" value="{{fontSize}}" #fontinput>
     </div>
-    <button (click)="apply(colorinput.value,fontinput.value)">
+    <button class="ui primary button" (click)="apply(colorinput.value,fontinput.value)">
       Apply settings
     </button>
 <h4>

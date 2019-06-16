@@ -37,6 +37,7 @@ function skuValidator(control: FormControl):{ [s: string]: boolean } {
       <div class="field"
           [class.error]="!sku.valid && sku.touched">
         <label for="skuInput">SKU</label>
+<!--        双向数据绑定[(ngModel)]-->
         <input type="text"
                id="skuInput"
                placeholder="SKU"
@@ -61,6 +62,7 @@ export class DemoFormWithCustomValidations {
     });
 
     this.sku = this.myForm.controls['sku'];
+    // 监听
     this.sku.valueChanges.subscribe(
       (value:string) => {
         console.log('sku changed to:', value);

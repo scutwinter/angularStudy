@@ -6,11 +6,15 @@ import {$} from 'protractor';
   selector: 'demo-form-sku',
   template: `
   <div class="ui raised segment">
-    <h2 class="ui header">Demo Form: Sku</h2>
+    <h2 class="ui header">Demo Form: Information</h2>
     <form #f="ngForm" (ngSubmit)="onSubmit(f.value)" class="ui form">
       <div class="field">
-        <label for="skuInput">SKU</label>
-        <input type="text" id="skuInput" placeholder="SKU" name="sku" ngModel>
+        <label for="nameInput">Name</label>
+        <input type="text" id="nameInput" placeholder="Name" name="name" ngModel>
+      </div>
+      <div class="field">
+        <label for="emailInput">Email</label>
+        <input type="text" id="emailInput" placeholder="Email" name="email" ngModel>
       </div>
       <button type="submit" class="btn btn-success">Submit</button>
       
@@ -20,7 +24,8 @@ import {$} from 'protractor';
 // tslint:disable-next-line:component-class-suffix
 export class DemoFormSku {
   onSubmit(form: any): void {
-    alert(form.sku);
-    console.log('you submitted value:',form);
+    alert(form.name);
+    alert(form.email);
+    console.log('you submitted value:', form);
   }
 }

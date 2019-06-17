@@ -63,7 +63,9 @@ export var youTubeServiceInjecttables: Array<any> = [
 ];
 
 @Component({
-  outputs: ['loading','results'],
+  // tslint:disable-next-line:no-outputs-metadata-property
+  outputs: ['loading', 'results'],
+  // tslint:disable-next-line:component-selector
   selector: 'search-box',
   template: `
   <input type="text" class="form-control" placeholder="Search" autofocus>
@@ -91,9 +93,19 @@ export class SearchBox implements OnInit{
         tap(() => this.loading.next(true)),
         map((query: string) => this.youtube.search(query)),
         switchAll()
-      ).subscribe()
+      ).subscribe(
+      (results: SearchResult[]) => {
+        this.loading.next(false);
+        this.results.next(results);
+      },
+      (err: any) => {
+        console.log(err);
+        this.loading.next(false);
+      },
+      () => {
+        this.loading.next(false);
+      }
+    );
   }
-
-
 }
 

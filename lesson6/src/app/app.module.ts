@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SimpleHTTPComponent } from './ts/SimpleHTTPComponent';
+import { youTubeServiceInjecttables } from './ts/YouTubeSearchComponent';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,7 @@ import { SimpleHTTPComponent } from './ts/SimpleHTTPComponent';
     HttpClientModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [youTubeServiceInjecttables],
   bootstrap: [SimpleHTTPComponent]
 })
 export class AppModule { }

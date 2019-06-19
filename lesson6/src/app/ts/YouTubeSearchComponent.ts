@@ -5,10 +5,11 @@ import { fromEvent } from 'rxjs';
 import { debounceTime, filter, map, switchAll, tap} from 'rxjs/operators';
 
 
+
 export var YOUTUBE_API_KEY: string = 'AIzaSyBuAQNNkVtxRAXKur786q-H8SO_hekNqds';
 export var YOUTUBE_API_URL: string = 'https://www.googleapis.com/youtube/v3/search';
 // @ts-ignore
-let loadingGif: string = ((<any>window).__karma__) ? '' : require('images/loading.gif');
+let loadingGif: string = ((<any>window).__karma__) ? '' : require('../images/loading.gif');
 
 class SearchResult {
   id: string;
@@ -45,7 +46,7 @@ export class YouTubeService {
     let queryUrl: string = `${this.apiUrl}?${params}`;
     return this.http.get(queryUrl)
       .pipe(map((res) => {
-        return (<any> res).items.map(item => {
+        return (res as any).items.map(item => {
           return new SearchResult({
             id: item.id.videoId,
             title: item.snippet.title,
@@ -117,14 +118,14 @@ export class SearchBox implements OnInit {
   // tslint:disable-next-line:component-selector
   selector: 'search-result',
   template: `
-  <div class="col-sm-6 col-md-3">
+  <div class="col-md-3">
     <div class="thumbnail">
       <img src="{{result.thumbnailUrl}}">
       <div class="caption">
         <h3>{{result.title}}</h3>
         <p>{{result.description}}</p>
         <p><a href="{{result.videoUrl}}"
-              class="btn btn-default" role="button">Watch</a>
+              class="btn btn-info" role="button">Watch</a>
         </p>
       </div>
     </div>
@@ -138,33 +139,35 @@ export class SearchResultComponent{
   // tslint:disable-next-line:component-selector
   selector: 'youtube-search',
   template: `
-  <div class='container'>
-    <div class="page-header">
-      <h1>YouTube Search
-        <img style="float: right;"
-             *ngIf="loading"
-             src='${loadingGif}' />
-      </h1>
-    </div>
-
-    <div class="row">
-      <div class="input-group input-group-lg col-md-12">
-        <search-box
-        (loading)="loading = $event"
-        (results)="updateResults($event)"
-        ></search-box>
+ <div class='container-fluid'>
+      <div class="page-header">
+        <h1>YouTube Search
+          <img
+            style="float: left;"
+            *ngIf="loading"
+            src='${loadingGif}' />
+        </h1>
       </div>
-    </div>
-    <div class="row">
-      <search-result
-      *ngFor="let result of results"
-      [result]="result">
-      </search-result>
-    </div>
+
+      <div class="row">
+        <div class="input-group-sm col-md-12">
+          <search-box
+             (loading)="loading = $event"
+             (results)="updateResults($event)"
+              ></search-box>
+        </div>
+      </div>
+
+      <div class="row">
+        <search-result
+          *ngFor="let result of results"
+          [result]="result">
+        </search-result>
+      </div>
   </div>
 `
 })
-export class YouTubeSearchComponent{
+export class YouTubeSearchComponent {
   results: SearchResult[];
   updateResults(results: SearchResult[]): void {
     this.results = results;

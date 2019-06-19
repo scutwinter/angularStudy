@@ -4,19 +4,24 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SimpleHTTPComponent } from './ts/SimpleHTTPComponent';
-import { youTubeServiceInjecttables } from './ts/YouTubeSearchComponent';
+import {SearchBox, SearchResultComponent, YouTubeSearchComponent} from './ts/YouTubeSearchComponent';
+
+import {youTubeServiceInjecttables} from './ts/YouTubeSearchComponent';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SimpleHTTPComponent
+    SimpleHTTPComponent,
+    YouTubeSearchComponent,
+    SearchBox,
+    SearchResultComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule
   ],
-  providers: [youTubeServiceInjecttables],
-  bootstrap: [SimpleHTTPComponent]
+  bootstrap: [YouTubeSearchComponent],
+  providers: [youTubeServiceInjecttables]
 })
 export class AppModule { }

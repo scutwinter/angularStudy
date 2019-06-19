@@ -2,13 +2,13 @@ import { Component , Injectable , OnInit , ElementRef , EventEmitter , Inject} f
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { fromEvent } from 'rxjs';
-import {debounceTime, filter, map, switchAll, tap} from 'rxjs/operators';
+import { debounceTime, filter, map, switchAll, tap} from 'rxjs/operators';
 
 
 export var YOUTUBE_API_KEY: string = 'AIzaSyBuAQNNkVtxRAXKur786q-H8SO_hekNqds';
 export var YOUTUBE_API_URL: string = 'https://www.googleapis.com/youtube/v3/search';
 // @ts-ignore
-let loadingGif: string = ((<any> window).__karma__) ? '' : require('images/loading.gif');
+let loadingGif: string = ((<any>window).__karma__) ? '' : require('images/loading.gif');
 
 class SearchResult {
   id: string;
@@ -22,7 +22,7 @@ class SearchResult {
     this.title = obj && obj.title || null;
     this.description = obj && obj.description || null;
     this.thumbnailUrl = obj && obj.thumbnailUrl || null;
-    this.videoUrl = obj && obj.videoUrl || `https://www.youtube.com/watch?=${this.id}`; // 字符串插值
+    this.videoUrl = obj && obj.videoUrl || `https://www.youtube.com/watch?v=${this.id}`; // 字符串插值
   }
 }
 
@@ -34,7 +34,7 @@ export class YouTubeService {
               @Inject(YOUTUBE_API_URL) private apiUrl: string) {
 
   }
-  search(query: string): Observable<SearchResult[]>{
+  search(query: string): Observable<SearchResult[]> {
     let params: string = [
       `q=${query}`,
       `key=${this.apiKey}`,
@@ -44,8 +44,8 @@ export class YouTubeService {
     ].join('&');
     let queryUrl: string = `${this.apiUrl}?${params}`;
     return this.http.get(queryUrl)
-      .map((response: Response) => {
-        return (<any>response.json()).items.map(item => {
+      .pipe(map((res) => {
+        return (<any> res).items.map(item => {
           return new SearchResult({
             id: item.id.videoId,
             title: item.snippet.title,
@@ -53,13 +53,15 @@ export class YouTubeService {
             thumbnailUrl: item.snippet.thumbnails.high.url
           });
         });
-      });
+      })
+      );
+
   }
 }
-export var youTubeServiceInjecttables: Array<any> = [
-  {provide: YouTubeService, useClass: YouTubeService},
-  {provide: YOUTUBE_API_KEY, useClass: YOUTUBE_API_KEY},
-  {provide: YOUTUBE_API_URL, useClass: YOUTUBE_API_URL}
+export var youTubeServiceInjecttables: Array <any> = [
+  { provide: YouTubeService, useClass: YouTubeService},
+  { provide: YOUTUBE_API_KEY, useValue: YOUTUBE_API_KEY},
+  { provide: YOUTUBE_API_URL, useValue: YOUTUBE_API_URL}
 ];
 
 @Component({
@@ -71,7 +73,8 @@ export var youTubeServiceInjecttables: Array<any> = [
   <input type="text" class="form-control" placeholder="Search" autofocus>
   `
 })
-export class SearchBox implements OnInit{
+// tslint:disable-next-line:component-class-suffix
+export class SearchBox implements OnInit {
   loading: EventEmitter<boolean> = new EventEmitter<boolean>();
   results: EventEmitter<SearchResult[]> = new EventEmitter<SearchResult[]>();
   constructor(private youtube: YouTubeService,
@@ -108,4 +111,62 @@ export class SearchBox implements OnInit{
     );
   }
 }
+@Component({
+  // tslint:disable-next-line:no-inputs-metadata-property
+  inputs: ['result'],
+  // tslint:disable-next-line:component-selector
+  selector: 'search-result',
+  template: `
+  <div class="col-sm-6 col-md-3">
+    <div class="thumbnail">
+      <img src="{{result.thumbnailUrl}}">
+      <div class="caption">
+        <h3>{{result.title}}</h3>
+        <p>{{result.description}}</p>
+        <p><a href="{{result.videoUrl}}"
+              class="btn btn-default" role="button">Watch</a>
+        </p>
+      </div>
+    </div>
+  </div>`
+})
+export class SearchResultComponent{
+  result: SearchResult;
+}
 
+@Component({
+  // tslint:disable-next-line:component-selector
+  selector: 'youtube-search',
+  template: `
+  <div class='container'>
+    <div class="page-header">
+      <h1>YouTube Search
+        <img style="float: right;"
+             *ngIf="loading"
+             src='${loadingGif}' />
+      </h1>
+    </div>
+
+    <div class="row">
+      <div class="input-group input-group-lg col-md-12">
+        <search-box
+        (loading)="loading = $event"
+        (results)="updateResults($event)"
+        ></search-box>
+      </div>
+    </div>
+    <div class="row">
+      <search-result
+      *ngFor="let result of results"
+      [result]="result">
+      </search-result>
+    </div>
+  </div>
+`
+})
+export class YouTubeSearchComponent{
+  results: SearchResult[];
+  updateResults(results: SearchResult[]): void {
+    this.results = results;
+  }
+}

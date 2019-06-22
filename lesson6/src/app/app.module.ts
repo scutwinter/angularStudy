@@ -21,7 +21,7 @@ import {youTubeServiceInjecttables} from './ts/YouTubeSearchComponent';
     HttpClientModule,
     AppRoutingModule
   ],
-  bootstrap: [YouTubeSearchComponent],
+  bootstrap: [SimpleHTTPComponent, YouTubeSearchComponent],
   providers: [youTubeServiceInjecttables]
 })
 export class AppModule { }

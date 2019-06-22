@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SimpleHTTPComponent } from './ts/SimpleHTTPComponent';
+import { MoreHTTPRequests } from './ts/MoreHTTPRequests';
 import {SearchBox, SearchResultComponent, YouTubeSearchComponent} from './ts/YouTubeSearchComponent';
 
 import {youTubeServiceInjecttables} from './ts/YouTubeSearchComponent';
@@ -12,6 +13,7 @@ import {youTubeServiceInjecttables} from './ts/YouTubeSearchComponent';
   declarations: [
     AppComponent,
     SimpleHTTPComponent,
+    MoreHTTPRequests,
     YouTubeSearchComponent,
     SearchBox,
     SearchResultComponent
@@ -21,7 +23,7 @@ import {youTubeServiceInjecttables} from './ts/YouTubeSearchComponent';
     HttpClientModule,
     AppRoutingModule
   ],
-  bootstrap: [SimpleHTTPComponent, YouTubeSearchComponent],
+  bootstrap: [SimpleHTTPComponent, YouTubeSearchComponent, MoreHTTPRequests],
   providers: [youTubeServiceInjecttables]
 })
 export class AppModule { }

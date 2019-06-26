@@ -28,11 +28,11 @@ import {SpotifyService} from '../services/SpotifyService';
         <div class="col-sm-6 col-md-4" *ngFor="let t of results">
           <div class="thumbnail">
             <div class="content">
-              <img src="{{ t.album.images[0].url }}" class="img-responsive">
+              <img src="{{ t.artists[0].img1v1Url }}" class="img-responsive">
               <div class="caption">
                 <h3>
-                  <a [routerLink]="['/artists',t.artists[0].id]">
-                    {{ t.artists[0].name }}
+                  <a [routerLink]="['/song',t.id]">
+                    {{ t.name }}
                   </a>
                 </h3>
                 <br>
@@ -44,13 +44,16 @@ import {SpotifyService} from '../services/SpotifyService';
               </div>
               <div class="attribution">
                 <h4>
-                  <a [routerLink]="['/albums', t.album.id]">
-                    {{ t.album.name }}
+                  <a [routerLink]="['/albums', t.id]">
+                    {{ t.name }}
                   </a>
                 </h4>
               </div>
             </div>
           </div>
+          <audio src={{t.playAddress}} controls="controls">
+            Your browser does not support the audio tag.
+          </audio>
         </div>
       </div>
     </div>
@@ -63,9 +66,9 @@ export class SearchComponent implements OnInit {
 
   constructor(private spotify: SpotifyService,
               private router: Router,
-              private route: ActivatedRoute){
+              private route: ActivatedRoute) {
     this.route.queryParams.subscribe(
-      params =>{ this.query = params['query'] || ''; });
+      params => { this.query = params['query'] || ''; });
   }
 
   ngOnInit(): void {
@@ -92,10 +95,27 @@ export class SearchComponent implements OnInit {
         );
   }
 
-  renderResults(res: any): void{
+  renderResults(res: any): void {
     this.results =  null;
-    if (res && res.tracks && res.tracks.items) {
-      this.results = res.tracks.items;
+    if (res && res.result && res.result.songs) {
+      this.results = res.result.songs;
+    }
+    // tslint:disable-next-line:prefer-const
+    let count: number = 0 ;
+    // tslint:disable-next-line:forin
+    for (var song in this.results) {
+      this.spotify.getAddress(this.results[song].id)
+        .subscribe((res: any) => {
+            console.log( res.data[0].url);
+            this.results[count].playAddress = res.data[0].url;
+            count++;
+          },
+          (err: any) => {
+            alert(err.error.error.message.toString());
+          },
+          () => {
+          }
+        );
     }
   }
 }

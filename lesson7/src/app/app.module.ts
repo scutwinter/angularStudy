@@ -19,7 +19,6 @@ import { AppComponent } from './app.component';
         <li><a [routerLink]="['contact']">Contact Us</a></li>
       </ul>
     </nav>
-    
     <router-outlet></router-outlet>
   </div>
   `

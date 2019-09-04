@@ -13,6 +13,8 @@ import org.springframework.core.io.Resource;
 
 @Configuration
 @ComponentScan("com.winter.highlight_spring4.ch2.el")
+//7 注入配置文件需要使用@PropertySource指定文件地址
+//并且Properties可以从Environment中获得
 @PropertySource("classpath:com/winter/highlight_spring4/ch2/el/test.properties")//7
 public class ElConfig {
     @Value("I Love You!") //1 注入普通字符
@@ -39,7 +41,7 @@ public class ElConfig {
     @Autowired
     private Environment environment; //7 注入配置文件
 
-    @Bean //7 注入配置文件
+    @Bean //7 注入配置文件，配置PropertySourcesPlaceholderConfigurer的Bean是为 @Value("${book.name}")注入配置文件所使用
     public static PropertySourcesPlaceholderConfigurer propertyConfigure(){
         return  new PropertySourcesPlaceholderConfigurer();
     }

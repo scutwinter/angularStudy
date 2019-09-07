@@ -6,7 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="highlig_spring4" />
+        <module name="highlight_spring4" />
       </profile>
     </annotationProcessing>
   </component>

@@ -17,4 +17,5 @@ public class ProfileConfig {
     public DemoBean prodDemoBean(){
         return new DemoBean("from production profile");
     }
+
 }

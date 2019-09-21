@@ -12,7 +12,6 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
  *   这时控制器支持使用@MessageMapping，就像使用@RequestMapping一样
  */
 @EnableWebSocketMessageBroker
-
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     /**
@@ -21,12 +20,15 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry){
         //3 注册一个STOMP的endpoint，并指定使用SockJS协议
         registry.addEndpoint("/endpointWinter").withSockJS();
+        // 注册一个名为/endpointChat的endpoint
+        registry.addEndpoint("/endpointChat").withSockJS();
     }
 
     @Override
     //4 配置消息代理（Message Broker）
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         //5 广播式应配置一个/topic消息代理
-        registry.enableSimpleBroker("/topic");
+        //点对点式应增加一个/queue消息代理
+        registry.enableSimpleBroker("/queue","/topic");
     }
 }

@@ -33,11 +33,14 @@
         $('#response').html();
     }
     function connect() {
-        var socket = new SockJS('/endpointWinter');
-        stompClient = Stomp.over(socket);
-        stompClient.connect({},function (frame) {
+        var socket = new SockJS('/endpointWinter'); //1 接连SockJS的endpoint名称为"/endpointWinter"
+        stompClient = Stomp.over(socket);//2 使用STOMP子协议的WebSocket客户端
+        stompClient.connect({},function (frame) {//3 连接WebSocket服务端
             setConnected(true);
             console.log('Connected:'+frame);
+            /**
+             * 通过stompClient.subscribe订阅topic/getResponse，目标发送的消息，这个是在控制器的@SendTo中定义的
+             */
             stompClient.subscribe('/topic/getResponse',function (response) {
                 showResponse(JSON.parse(response.body).responseMessage);
             });
@@ -52,6 +55,7 @@
     }
     function sendName() {
         var name=$('#name').val();
+        //5 通过stompClient.send向/welcome目标发送消息，这个是在控制器的@MessageMapping中定义的
         stompClient.send("/welcome",{},JSON.stringify({'name':name}));
     }
     function showResponse(message) {

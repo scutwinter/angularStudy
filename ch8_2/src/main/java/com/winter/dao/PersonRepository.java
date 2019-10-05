@@ -1,13 +1,14 @@
 package com.winter.dao;
 
 import com.winter.domain.Person;
+import com.winter.support.CustomRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-
-public interface PersonRepository extends JpaRepository<Person, Long> {
+//extends JpaRepository改成继承自定义的Repository
+public interface PersonRepository extends CustomRepository<Person, Long> {
     //1 使用方法名查询，接受一个name参数，返回值为列表
     List<Person> findByAddress(String address);
 

@@ -10,8 +10,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.Console;
 import java.util.List;
 
 @RestController
@@ -103,5 +101,11 @@ public class DataController {
         //替代的方法是不要new PageRequest，而是直接用 PageRequest.of这个方法
         Page<Person> pagePerson=personRepository.findAll(PageRequest.of(1,2));
         return pagePerson;
+    }
+
+    @RequestMapping("/auto")
+    public Page<Person> auto(Person person){
+        Page<Person> pagePeople = personRepository.findByAuto(person,PageRequest.of(0,10));
+        return pagePeople;
     }
 }

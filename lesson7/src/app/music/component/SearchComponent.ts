@@ -28,7 +28,7 @@ import {SpotifyService} from '../services/SpotifyService';
         <div class="col-sm-6 col-md-4" *ngFor="let t of results">
           <div class="thumbnail">
             <div class="content">
-              <img src="{{ t.artists[0].img1v1Url }}" class="img-responsive">
+<!--              <img src="{{ t.artists[0].img1v1Url }}" class="img-responsive">-->
               <div class="caption">
                 <h3>
                   <a [routerLink]="['/song',t.id]">
@@ -37,15 +37,15 @@ import {SpotifyService} from '../services/SpotifyService';
                 </h3>
                 <br>
                 <p>
-                  <a [routerLink]="['/tracks', t.id]">
-                    {{ t.name }}
+                  <a>
+                    {{ t.artists[0].name }}
                   </a>
                 </p>
               </div>
               <div class="attribution">
                 <h4>
                   <a [routerLink]="['/albums', t.id]">
-                    {{ t.name }}
+                    {{ t.album.name }}
                   </a>
                 </h4>
               </div>
@@ -103,12 +103,34 @@ export class SearchComponent implements OnInit {
     // tslint:disable-next-line:prefer-const
     let count: number = 0 ;
     // tslint:disable-next-line:forin
-    for (var song in this.results) {
-      this.spotify.getAddress(this.results[song].id)
+    // count = Object.keys(this.results).length;
+    this.getPlayAddress(this.results , count);
+    // this.spotify.getAddress(this.results[0].id)
+    //   .subscribe((res: any) => {
+    //       while (count <= Object.keys(this.results).length) {
+    //         console.log( res.data[0].url);
+    //         this.results[count].playAddress = res.data[0].url;
+    //         count++;
+    //       }
+    //
+    //     },
+    //     (err: any) => {
+    //       alert(err.error.error.message.toString());
+    //     },
+    //     () => {
+    //     }
+    //   );
+
+  }
+
+  getPlayAddress(songResult: any, icount: number){
+    if (icount < Object.keys(songResult).length ) {
+      this.spotify.getAddress(songResult[icount].id)
         .subscribe((res: any) => {
             console.log( res.data[0].url);
-            this.results[count].playAddress = res.data[0].url;
-            count++;
+            songResult[icount].playAddress = res.data[0].url;
+            icount++;
+            this.getPlayAddress(songResult, icount);
           },
           (err: any) => {
             alert(err.error.error.message.toString());
@@ -117,5 +139,6 @@ export class SearchComponent implements OnInit {
           }
         );
     }
+
   }
 }

@@ -1,5 +1,4 @@
 package com.winter.ch6_2_3.config;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 

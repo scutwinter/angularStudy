@@ -42,10 +42,10 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
         <!--需要自动生成代码的表及对应的类名设置-->
-        <table tableName="generator_test" domainObjectName="GeneratorTest" mapperName="generator_testDao"
-               enableCountByExample="false"
-               enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-        </table>
+<!--        <table tableName="generator_test" domainObjectName="GeneratorTest" mapperName="generator_testDao"-->
+<!--               enableCountByExample="false"-->
+<!--               enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+<!--        </table>-->
     </context>
 </generatorConfiguration>

@@ -60,6 +60,13 @@ public class ApiController {
         return ResultGenerator.genSuccessResult(users);
     }
 
+    /**
+     * 新增一条数据
+     * @param user
+     * @return
+     */
+    @RequestMapping(value = "/users",method = RequestMethod.POST)
+    @ResponseBody
     public Result<Boolean> insert(@RequestBody User user){
         if(StringUtils.isEmpty(user.getId()) || StringUtils.isEmpty(user.getName()) || StringUtils.isEmpty(user.getPassword())){
             return ResultGenerator.genFailResult("缺少参数");
@@ -70,5 +77,43 @@ public class ApiController {
         usersMap.put(user.getId(),user);
         return ResultGenerator.genSuccessResult(true);
     }
+
+    /**
+     * 修改一条数据
+     * @param tempUser
+     * @return
+     */
+    @RequestMapping(value = "/users",method = RequestMethod.PUT)
+    @ResponseBody
+    public Result<Boolean> update(@RequestBody User tempUser){
+        if(tempUser.getId()==null || tempUser.getId()<1 || StringUtils.isEmpty(tempUser.getName())){
+            return ResultGenerator.genFailResult("缺少参数");
+        }
+        User user=usersMap.get(tempUser.getId());
+        if(user== null){
+            return ResultGenerator.genFailResult("参数异常");
+        }
+        user.setName(tempUser.getName());
+        user.setPassword(tempUser.getPassword());
+        usersMap.put(tempUser.getId(),tempUser);
+        return ResultGenerator.genSuccessResult(true);
+    }
+
+    /**
+     * 删除一条数据
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/users/{id}",method = RequestMethod.DELETE)
+    @ResponseBody
+    public Result<Boolean> delete(@PathVariable("id") Integer id){
+        if(id==null || id < 1 ){
+            return ResultGenerator.genFailResult("缺少参数");
+        }
+        usersMap.remove(id);
+        return ResultGenerator.genSuccessResult(true);
+    }
+
+
 
 }

@@ -3,12 +3,16 @@ package com.winter.yxssoft.controller;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 
@@ -39,5 +43,18 @@ public class KaptchaController {
         responseOutputStream.write(captchaOutputStream);
         responseOutputStream.flush();
         responseOutputStream.close();
+    }
+
+    @GetMapping("/verify")
+    @ResponseBody
+    public String verify(@RequestParam("code") String code, HttpSession session){
+        if(StringUtils.isEmpty(code)){
+            return "验证码不能为空";
+        }
+        String kaptchaCode = session.getAttribute("verifyCode") + "";
+        if (StringUtils.isEmpty(kaptchaCode) || !code.equals(kaptchaCode)){
+            return "验证码错误";
+        }
+        return "验证成功";
     }
 }

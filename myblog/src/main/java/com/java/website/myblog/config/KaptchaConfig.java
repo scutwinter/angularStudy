@@ -1,4 +1,4 @@
-package com.winter.yxssoft.config;
+package com.java.website.myblog.config;
 
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.google.code.kaptcha.util.Config;

@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("com.java.website")
+@MapperScan("com.java.website.myblog.dao")
 public class MyblogApplication {
 
     public static void main(String[] args) {

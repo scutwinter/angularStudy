@@ -24,9 +24,14 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public boolean updatePassword(Integer userId, String originalPassword, String newPassword) {
+    public int updatePassword(Integer userId, String originalPassword, String newPassword) {
         String originalPasswordMD5 = MD5Util.MD5Encode(originalPassword,"UTF-8");
         String newPasswordMD5 = MD5Util.MD5Encode(newPassword,"UTF-8");
         return userInfoDao.updatePassword(userId,originalPasswordMD5,newPasswordMD5);
+    }
+
+    @Override
+    public boolean updateName(Integer userId, String userNickName) {
+        return userInfoDao.updateName(userId,userNickName);
     }
 }

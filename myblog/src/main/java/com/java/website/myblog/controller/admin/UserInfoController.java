@@ -44,12 +44,16 @@ public class UserInfoController {
             session.setAttribute("loginUser",userInfo.getUserName());
             session.setAttribute("loginUserId",userInfo.getUserId());
             session.setMaxInactiveInterval(60 * 60 * 2);
-            return "redirect:/admin/profile";
+            return "redirect:/admin/index";
         }else{
             session.setAttribute("errorMsg","登陆失败");
             return "admin/login";
         }
 
+    }
+    @GetMapping({"", "/", "/index", "/index.html"})
+    public String index() {
+        return "admin/index";
     }
 
     @GetMapping("/profile")
@@ -62,7 +66,7 @@ public class UserInfoController {
         request.setAttribute("path","profile");
         request.setAttribute("loginUserName",userInfo.getUserName());
         request.setAttribute("nickName",userInfo.getUserNickname());
-        return "admin/index";
+        return "admin/profile";
     }
 
     @PostMapping("/profile/password")
@@ -74,7 +78,7 @@ public class UserInfoController {
             return "参数不能为空";
         }
         Integer loginUserId=(int) request.getSession().getAttribute("loginUserId");
-        if (userInfoService.updatePassword(loginUserId,originalPassword,newPassword)){
+        if (userInfoService.updatePassword(loginUserId,originalPassword,newPassword)>0){
             //修改成功后清空session中的数据，前端控制跳转至登录页
             request.getSession().removeAttribute("loginUserId");
             request.getSession().removeAttribute("loginUser");
@@ -83,6 +87,30 @@ public class UserInfoController {
         }else{
             return "修改失败";
         }
+    }
+
+    @PostMapping("/profile/name")
+    @ResponseBody
+    public String nameUpdate(HttpServletRequest request,
+                             @RequestParam("nickName") String nickName){
+        if (StringUtils.isEmpty(nickName)){
+            return "参数不能为空";
+        }
+        Integer loginUserId=(int) request.getSession().getAttribute("loginUserId");
+        if (userInfoService.updateName(loginUserId,nickName)){
+            return "success";
+        }else{
+            return "修改失败";
+        }
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request){
+        request.getSession().removeAttribute("loginUserId");
+        request.getSession().removeAttribute("loginUser");
+        request.getSession().removeAttribute("errorMsg");
+        return "admin/login";
+
     }
 
 }

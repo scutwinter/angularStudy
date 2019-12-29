@@ -28,7 +28,10 @@ public interface UserInfoDao {
 
     UserInfo getUserDetailById(Integer userId);
 
-    boolean updatePassword(@Param("userId") Integer userId,
+    int updatePassword(@Param("userId") Integer userId,
                            @Param("originalPassword") String originalPassword,
                            @Param("newPassword") String newPassword);
+
+    boolean updateName(@Param("userId") Integer userId,
+                   @Param("userNickName") String userNickName);
 }

@@ -21,7 +21,7 @@ public class BlogCategoryServiceImpl implements BlogCategoryService {
         List<BlogCategory> blogCategories=blogCategoryDao.findCategoryList(pageUtil);
         int totalCount=blogCategoryDao.getTotalCategories();
         PageResult pageResult = new PageResult(blogCategories,totalCount,pageUtil.getLimit(),pageUtil.getPage());
-        return null;
+        return pageResult;
     }
 
     @Override

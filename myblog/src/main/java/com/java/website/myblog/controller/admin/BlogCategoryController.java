@@ -46,7 +46,7 @@ public class BlogCategoryController {
      * @param categoryIcon
      * @return
      */
-    @RequestMapping(value = "/categories/save",method = RequestMethod.GET)
+    @RequestMapping(value = "/categories/save",method = RequestMethod.POST)
     @ResponseBody
     public Result save(@RequestParam("categoryName") String categoryName,
                        @RequestParam("categoryIcon") String categoryIcon){

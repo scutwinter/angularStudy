@@ -1,11 +1,10 @@
 $(function () {
     $("#jqGrid").jqGrid({
-        url: '/admin/categories/list',
+        url: '/admin/tags/list',
         datatype: "json",
         colModel: [
-            {label: 'id', name: 'categoryId', index: 'categoryId', width: 50, key: true, hidden: true},
-            {label: '分类名称', name: 'categoryName', index: 'categoryName', width: 240},
-            {label: '分类图标', name: 'categoryIcon', index: 'categoryIcon', width: 120, formatter: imgFormatter},
+            {label: 'id', name: 'tagId', index: 'tagId', width: 50, key: true, hidden: true},
+            {label: '标签名称', name: 'tagName', index: 'tagName', width: 240},
             {label: '添加时间', name: 'createTime', index: 'createTime', width: 120,formatter:'date',formatoptions:{srcformat: 'Y-m-d H:i:s', newformat: 'Y-m-d H:i:s'}}
         ],
         height: 560,
@@ -34,17 +33,10 @@ $(function () {
             $("#jqGrid").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
         }
     });
-
     $(window).resize(function () {
         $("#jqGrid").setGridWidth($(".card-body").width());
     });
 });
-
-
-function imgFormatter(cellvalue) {
-    return "<a href='" + cellvalue + "'> <img src='" + cellvalue + "' height=\"64\" width=\"64\" alt='icon'/></a>";
-}
-
 /**
  * jqGrid重新加载
  */
@@ -55,39 +47,27 @@ function reload() {
     }).trigger("reloadGrid");
 }
 
-function categoryAdd() {
-    reset();
-    $('.modal-title').html('分类添加');
-    $('#categoryModal').modal('show');
-}
-
-//绑定modal上的保存按钮
-$('#saveButton').click(function () {
-    var categoryName = $("#categoryName").val();
-    if (!validCN_ENString2_18(categoryName)) {
-        $('#edit-error-msg').css("display", "block");
-        $('#edit-error-msg').html("请输入符合规范的分类名称！");
+function tagAdd() {
+    var tagName = $("#tagName").val();
+    if (!validCN_ENString2_18(tagName)) {
+        swal("标签名称不规范", {
+            icon: "error",
+        });
     } else {
-        var params = $("#categoryForm").serialize();
-        var url = '/admin/categories/save';
-        var id = getSelectedRowWithoutAlert();
-        if (id != null) {
-            url = '/admin/categories/update';
-        }
+        var url = '/admin/tags/save?tagName=' + tagName;
         $.ajax({
             type: 'POST',//方法类型
             url: url,
-            data: params,
             success: function (result) {
                 if (result.resultCode == 200) {
-                    $('#categoryModal').modal('hide');
+                    $("#tagName").val('')
                     swal("保存成功", {
                         icon: "success",
                     });
                     reload();
                 }
                 else {
-                    $('#categoryModal').modal('hide');
+                    $("#tagName").val('')
                     swal(result.message, {
                         icon: "error",
                     });
@@ -101,30 +81,9 @@ $('#saveButton').click(function () {
             }
         });
     }
-});
-
-function categoryEdit() {
-    reset();
-    var id = getSelectedRow();
-    if (id == null) {
-        return;
-    }
-    $('.modal-title').html('分类编辑');
-    $('#categoryModal').modal('show');
-    //请求数据
-    $.get("/admin/categories/info/" + id, function (r) {
-        if (r.resultCode == 200 && r.data != null) {
-            //填充数据至modal
-            $("#categoryIconImg").attr("src", r.data.categoryIcon);
-            $("#categoryIconImg").attr("style", "width:64px ;height: 64px;display:block;");
-            $("#categoryIcon").val(r.data.categoryIcon);
-            $("#categoryName").val(r.data.categoryName);
-        }
-    });
-    $("#categoryId").val(id);
 }
 
-function deleteCagegory() {
+function deleteTag() {
     var ids = getSelectedRows();
     if (ids == null) {
         return;
@@ -136,10 +95,10 @@ function deleteCagegory() {
         buttons: true,
         dangerMode: true,
     }).then((flag) => {
-            if(flag) {
+            if (flag) {
                 $.ajax({
                     type: "POST",
-                    url: "/admin/categories/delete",
+                    url: "/admin/tags/delete",
                     contentType: "application/json",
                     data: JSON.stringify(ids),
                     success: function (r) {
@@ -157,31 +116,5 @@ function deleteCagegory() {
                 });
             }
         }
-    )
-    ;
-}
-
-/**
- * 图标切换功能
- */
-$('#categoryIconButton').click(function () {
-    var rand = parseInt(Math.random() * 20 + 1);
-    $("#categoryIconImg").attr("src", '/admin/dist/img/category/' + padding(rand,2)+ ".png");
-    $("#categoryIconImg").attr("style", "width:64px ;height: 64px;display:block;");
-    $("#categoryIcon").val('/admin/dist/img/category/' + padding(rand,2) + ".png");
-});
-
-function reset() {
-    $("#categoryName").val('');
-    $("#categoryIconImg").attr("src", '/admin/dist/img/img-upload.png');
-    $("#categoryIcon").val('');
-    $('#edit-error-msg').css("display", "none");
-}
-
-//递归方式实现
-function padding(num, length) {
-    if((num + "").length >= length) {
-        return num;
-    }
-    return padding("0" + num, length)
+    );
 }

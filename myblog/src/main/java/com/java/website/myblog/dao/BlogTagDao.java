@@ -1,10 +1,11 @@
 package com.java.website.myblog.dao;
 
 import com.java.website.myblog.entity.BlogTag;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
-
+@Component
 public interface BlogTagDao {
     int deleteByPrimaryKey(Integer tagId);
 
@@ -25,4 +26,6 @@ public interface BlogTagDao {
     BlogTag selectByTagName(String tagName);
 
     int deleteBatch(Integer[] ids);
+
+    int batchInsertBlogTag(List<BlogTag> tagList);
 }

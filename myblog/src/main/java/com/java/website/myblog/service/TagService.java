@@ -10,4 +10,6 @@ public interface TagService {
 
     Boolean deleteBatch(Integer[] ids);
 
+
+
 }

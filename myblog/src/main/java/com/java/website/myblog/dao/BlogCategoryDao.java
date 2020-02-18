@@ -1,11 +1,12 @@
 package com.java.website.myblog.dao;
 
 import com.java.website.myblog.entity.BlogCategory;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
 
-
+@Component
 public interface BlogCategoryDao {
     int deleteByPrimaryKey(Integer categoryId);
 

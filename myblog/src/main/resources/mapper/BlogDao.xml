@@ -50,7 +50,7 @@
       #{enableComment,jdbcType=TINYINT}, #{isDeleted,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{blogContent,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.java.website.myblog.entity.Blog">
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="blogId" parameterType="com.java.website.myblog.entity.Blog">
     insert into tb_blog
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="blogId != null">

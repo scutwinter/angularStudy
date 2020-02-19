@@ -3,6 +3,8 @@ package com.java.website.myblog.controller.admin;
 import com.java.website.myblog.controller.common.Result;
 import com.java.website.myblog.controller.common.ResultGenerator;
 import com.java.website.myblog.entity.Blog;
+import com.java.website.myblog.entity.BlogCategory;
+import com.java.website.myblog.service.BlogCategoryService;
 import com.java.website.myblog.service.BlogService;
 import com.java.website.myblog.util.MyBlogUtils;
 import org.springframework.stereotype.Controller;
@@ -19,7 +21,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 @Controller
@@ -28,8 +32,11 @@ public class BlogController {
     @Resource
     private BlogService blogService;
 
+
     @GetMapping("/blogs/edit")
     public String edit(HttpServletRequest request){
+        List<BlogCategory> blogCategories=blogService.getAllBlogCategory();
+        request.setAttribute("categories",blogCategories);
         request.setAttribute("path","edit");
         return "admin/edit";
     }
@@ -73,7 +80,7 @@ public class BlogController {
         }
     }
 
-    @PostMapping("/blog/save")
+    @PostMapping("/blogs/save")
     @ResponseBody
     public Result save(@RequestParam("blogTitle") String blogTitle,
                        @RequestParam(name="blogSubUrl",required = false) String blogSubUrl,

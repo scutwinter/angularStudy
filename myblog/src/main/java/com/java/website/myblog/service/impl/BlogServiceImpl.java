@@ -30,6 +30,11 @@ public class BlogServiceImpl implements BlogService {
 
 
     @Override
+    public List<BlogCategory> getAllBlogCategory() {
+        return blogCategoryDao.findCategoryList(null);
+    }
+
+    @Override
     @Transactional
     public String saveBlog(Blog blog) {
         BlogCategory blogCategory = blogCategoryDao.selectByPrimaryKey(blog.getBlogCategoryId());

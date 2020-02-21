@@ -4,6 +4,8 @@ import com.java.website.myblog.entity.BlogCategory;
 import com.java.website.myblog.util.PageResult;
 import com.java.website.myblog.util.PageUtil;
 
+import java.util.List;
+
 public interface BlogCategoryService {
     PageResult getBlogCategoryPage(PageUtil pageUtil);
 
@@ -14,4 +16,6 @@ public interface BlogCategoryService {
     BlogCategory selectById(Integer id);
 
     Boolean updateCategory(Integer categoryId,String categoryName,String caategoryIcon);
+
+    List<BlogCategory> getAllCategories();
 }

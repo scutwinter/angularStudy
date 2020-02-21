@@ -26,8 +26,12 @@
     </foreach>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    update tb_blog_tag_relation set is_deleted = 1
+    delete from tb_blog_tag_relation
     where relation_id = #{relationId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByBlogId" parameterType="java.lang.Long">
+    delete from tb_blog_tag_relation
+        where blog_id = #{blogId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.java.website.myblog.entity.BlogTagRelation">
     insert into tb_blog_tag_relation (relation_id, blog_id, tag_id, 

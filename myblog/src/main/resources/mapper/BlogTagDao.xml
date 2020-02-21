@@ -36,7 +36,7 @@
   <select id="getTotalTags" resultType="int">
     select count(*)  from tb_blog_tag
     where is_deleted=0
-      </select>
+   </select>
 
 
 

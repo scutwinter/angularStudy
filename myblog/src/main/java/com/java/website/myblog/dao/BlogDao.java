@@ -1,7 +1,11 @@
 package com.java.website.myblog.dao;
 
 import com.java.website.myblog.entity.Blog;
+import com.java.website.myblog.entity.BlogCategory;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Map;
 
 @Component
 public interface BlogDao {
@@ -18,4 +22,10 @@ public interface BlogDao {
     int updateByPrimaryKeyWithBLOBs(Blog record);
 
     int updateByPrimaryKey(Blog record);
+
+    List<Blog> findBlogList(Map param);
+
+    int getTotalBlogs();
+
+    int deleteBatch(Integer[] ids);
 }

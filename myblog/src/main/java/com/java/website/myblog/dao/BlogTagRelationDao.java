@@ -9,6 +9,8 @@ import java.util.List;
 public interface BlogTagRelationDao {
     int deleteByPrimaryKey(Long relationId);
 
+    int deleteByBlogId(Long blogId);
+
     int insert(BlogTagRelation record);
 
     int insertSelective(BlogTagRelation record);

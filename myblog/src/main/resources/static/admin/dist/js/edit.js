@@ -47,6 +47,7 @@ $(function () {
     });
 });
 $('#confirmButton').click(function () {
+    var blogId = $('#blogId').val();
     var blogTitle = $('#blogName').val();
     var blogSubUrl = $('#blogSubUrl').val();
     var blogCategoryId = $('#blogCategoryId').val();
@@ -110,11 +111,21 @@ $('#confirmButton').click(function () {
         return;
     }
     var url = '/admin/blogs/save';
+    var swlMessage='保存成功';
     var data = {
         "blogTitle": blogTitle, "blogSubUrl": blogSubUrl, "blogCategoryId": blogCategoryId,
         "blogTags": blogTags, "blogContent": blogContent, "blogCoverImage": blogCoverImage, "blogStatus": blogStatus,
         "enableComment": enableComment
     };
+    if (blogId > 0){
+        url='/admin/blogs/update';
+        swlMessage= '修改成功';
+        data = {
+            "blogId": blogId,"blogTitle": blogTitle, "blogSubUrl": blogSubUrl, "blogCategoryId": blogCategoryId,
+            "blogTags": blogTags, "blogContent": blogContent, "blogCoverImage": blogCoverImage, "blogStatus": blogStatus,
+            "enableComment": enableComment
+        }
+    }
     console.log(data);
     $.ajax({
         type: 'POST',//方法类型
@@ -122,7 +133,7 @@ $('#confirmButton').click(function () {
         data: data,
         success: function (result) {
             if (result.resultCode == 200) {
-                swal("保存成功", {
+                swal(swlMessage, {
                     icon: "success"
                 });
             }

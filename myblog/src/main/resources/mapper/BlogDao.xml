@@ -26,6 +26,20 @@
   <sql id="Blob_Column_List">
     blog_content
   </sql>
+  <select id="getTotalBlogs" resultType="int">
+    select count(*)  from tb_blog
+    where is_deleted=0
+  </select>
+  <select id="findBlogList" parameterType="Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_blog
+    where is_deleted=0
+    order by blog_id desc
+    <if test="start!=null and limit!=null">
+      limit #{start},#{limit}
+    </if>
+  </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
@@ -37,6 +51,13 @@
   <update id="deleteByPrimaryKey" parameterType="java.lang.Long">
     update tb_blog set is_deleted = 1
     where blog_id = #{blogId,jdbcType=BIGINT} and is_deleted = 0
+  </update>
+  <update id="deleteBatch">
+    update tb_blog
+    set is_deleted=1 where blog_id in
+    <foreach item="id" collection="array" open="(" separator="," close=")">
+      #{id}
+    </foreach>
   </update>
   <insert id="insert" parameterType="com.java.website.myblog.entity.Blog">
     insert into tb_blog (blog_id, blog_title, blog_sub_url, 
@@ -219,5 +240,7 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where blog_id = #{blogId,jdbcType=BIGINT}
   </update>
+
+
 
 </mapper>

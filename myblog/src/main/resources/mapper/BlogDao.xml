@@ -26,15 +26,21 @@
   <sql id="Blob_Column_List">
     blog_content
   </sql>
-  <select id="getTotalBlogs" resultType="int">
+  <select id="getTotalBlogs" parameterType="Map" resultType="int">
     select count(*)  from tb_blog
     where is_deleted=0
+    <if test="blogStatus!=null">
+      AND blog_status = #{blogStatus}
+    </if>
   </select>
   <select id="findBlogList" parameterType="Map" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
     from tb_blog
     where is_deleted=0
+    <if test="blogStatus!=null">
+      AND blog_status = #{blogStatus}
+    </if>
     order by blog_id desc
     <if test="start!=null and limit!=null">
       limit #{start},#{limit}
@@ -240,6 +246,19 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where blog_id = #{blogId,jdbcType=BIGINT}
   </update>
+  <select id="findBlogListByType" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_blog
+    where is_deleted = 0 AND blog_status = 1
+    <if test="type!=null and type==0">
+      order by blog_views desc
+    </if>
+    <if test="type!=null and type==1">
+      order by blog_id desc
+    </if>
+    limit #{limit}
+  </select>
 
 
 

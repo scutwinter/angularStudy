@@ -49,6 +49,17 @@
       #{id}
     </foreach>
   </update>
+  <select id="selectByCategoryIds" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List"/>
+    from tb_blog_category
+    where category_id in
+    <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+    AND is_deleted = 0
+  </select>
+
   <insert id="insert" parameterType="com.java.website.myblog.entity.BlogCategory">
     insert into tb_blog_category (category_id, category_name, category_icon, 
       category_rank, is_deleted, create_time

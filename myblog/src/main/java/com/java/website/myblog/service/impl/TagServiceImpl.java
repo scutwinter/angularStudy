@@ -3,6 +3,7 @@ package com.java.website.myblog.service.impl;
 import com.java.website.myblog.dao.BlogTagDao;
 import com.java.website.myblog.dao.BlogTagRelationDao;
 import com.java.website.myblog.entity.BlogTag;
+import com.java.website.myblog.entity.BlogTagCount;
 import com.java.website.myblog.service.TagService;
 import com.java.website.myblog.util.PageResult;
 import com.java.website.myblog.util.PageUtil;
@@ -44,5 +45,10 @@ public class TagServiceImpl implements TagService {
             return false;
         }
         return blogTagDao.deleteBatch(ids)>0;
+    }
+
+    @Override
+    public List<BlogTagCount> getBlogTagCountForIndex() {
+        return blogTagDao.getTagCount();
     }
 }

@@ -1,6 +1,7 @@
 package com.java.website.myblog.dao;
 
 import com.java.website.myblog.entity.BlogCategory;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -27,4 +28,6 @@ public interface BlogCategoryDao {
     List<BlogCategory> findCategoryList(Map param);
 
     int getTotalCategories();
+
+    List<BlogCategory> selectByCategoryIds(List<Integer> categoryIds);
 }

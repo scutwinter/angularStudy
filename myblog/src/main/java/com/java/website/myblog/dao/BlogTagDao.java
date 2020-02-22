@@ -1,6 +1,7 @@
 package com.java.website.myblog.dao;
 
 import com.java.website.myblog.entity.BlogTag;
+import com.java.website.myblog.entity.BlogTagCount;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -29,5 +30,5 @@ public interface BlogTagDao {
 
     int batchInsertBlogTag(List<BlogTag> tagList);
 
-
+    List<BlogTagCount> getTagCount();
 }

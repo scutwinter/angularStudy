@@ -1,5 +1,7 @@
 package com.java.website.myblog.service.impl;
 
+import com.java.website.myblog.controller.vo.BlogListVo;
+import com.java.website.myblog.controller.vo.SimpleBlogListVo;
 import com.java.website.myblog.dao.BlogCategoryDao;
 import com.java.website.myblog.dao.BlogTagDao;
 import com.java.website.myblog.dao.BlogTagRelationDao;
@@ -11,13 +13,17 @@ import com.java.website.myblog.entity.BlogTagRelation;
 import com.java.website.myblog.service.BlogService;
 import com.java.website.myblog.util.PageResult;
 import com.java.website.myblog.util.PageUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class BlogServiceImpl implements BlogService {
@@ -181,7 +187,7 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public PageResult getBlogPage(PageUtil pageUtil) {
         List<Blog> blogs=blogDao.findBlogList(pageUtil);
-        int total=blogDao.getTotalBlogs();
+        int total=blogDao.getTotalBlogs(pageUtil);
         PageResult pageResult = new PageResult(blogs,total,pageUtil.getLimit(),pageUtil.getPage());
         return pageResult;
     }
@@ -189,5 +195,62 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public Blog getBlogById(long blogId) {
         return blogDao.selectByPrimaryKey(blogId);
+    }
+
+    @Override
+    public List<SimpleBlogListVo> getBlogListForIndexPage(int type) {
+        List<SimpleBlogListVo> simpleBlogListVos=new ArrayList<>();
+        List<Blog> blogs = blogDao.findBlogListByType(type,9);
+        if(!CollectionUtils.isEmpty(blogs)){
+            for (Blog blog:blogs){
+                SimpleBlogListVo simpleBlogListVo = new SimpleBlogListVo();
+                BeanUtils.copyProperties(blog,simpleBlogListVo);
+                simpleBlogListVos.add(simpleBlogListVo);
+            }
+        }
+        return simpleBlogListVos;
+    }
+
+    private List<BlogListVo> getBlogListVOsByBlogs(List<Blog> blogList){
+        List<BlogListVo> blogListVos=new ArrayList<>();
+        if(!CollectionUtils.isEmpty(blogList)){
+            //使用stream的map方法映射blogList中id的结果，对blogList的每一个blog对象执行getBlogCategoryId
+            List<Integer> categoryIds = blogList.stream().map(Blog::getBlogCategoryId).collect(Collectors.toList());
+            Map<Integer,String> blogCategoryMap = new HashMap<>();
+            if(!CollectionUtils.isEmpty(categoryIds)){
+                List<BlogCategory> blogCategories=blogCategoryDao.selectByCategoryIds(categoryIds);
+                if(!CollectionUtils.isEmpty(blogCategories)){
+                    //把Stream中的元素集合收集到一个结果容器中，再使用Collectors转成Map 既实现把list转成map 如果 (key1, key2)->key1则表示用前面的value覆盖后面的value，即保持不变
+                    blogCategoryMap = blogCategories.stream().collect(Collectors.toMap(BlogCategory::getCategoryId,BlogCategory::getCategoryIcon,(key1,key2) -> key2));
+                }
+            }
+            for(Blog blog : blogList){
+                BlogListVo blogListVo = new BlogListVo();
+                BeanUtils.copyProperties(blog,blogListVo);
+                if(blogCategoryMap.containsKey(blog.getBlogCategoryId())){
+                    blogListVo.setBlogCategoryIcon(blogCategoryMap.get(blog.getBlogCategoryId()));
+                }else{
+                    blogListVo.setBlogCategoryId(0);
+                    blogListVo.setBlogCategoryName("默认分类");
+                    blogListVo.setBlogCategoryIcon("/admin/dist/img/category/1.png");
+                }
+                blogListVos.add(blogListVo);
+            }
+        }
+        return blogListVos;
+    }
+
+    @Override
+    public PageResult getBlogsForIndexPage(int page){
+        Map params = new HashMap();
+        params.put("page",page);
+        params.put("limit", 8);
+        params.put("blogStatus",1);
+        PageUtil pageUtil=new PageUtil(params);
+        List<Blog> blogs=blogDao.findBlogList(params);
+        List<BlogListVo> blogListVos=getBlogListVOsByBlogs(blogs);
+        int total=blogDao.getTotalBlogs(params);
+        PageResult pageResult = new PageResult(blogListVos,total,pageUtil.getLimit(),pageUtil.getPage());
+        return pageResult;
     }
 }

@@ -31,4 +31,8 @@ public interface BlogDao {
     int deleteBatch(Integer[] ids);
 
     List<Blog> findBlogListByType(@Param("type") int type, @Param("limit") int limit);
+
+    List<Blog> getBlogPageByTagId(Map param);
+
+    int getTotalBlogByTagId(Map param);
 }

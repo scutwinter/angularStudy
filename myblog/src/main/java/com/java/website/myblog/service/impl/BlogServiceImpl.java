@@ -13,11 +13,13 @@ import com.java.website.myblog.entity.BlogTagRelation;
 import com.java.website.myblog.service.BlogService;
 import com.java.website.myblog.util.PageResult;
 import com.java.website.myblog.util.PageUtil;
+import com.java.website.myblog.util.PatternUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.thymeleaf.util.PatternUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -252,5 +254,65 @@ public class BlogServiceImpl implements BlogService {
         int total=blogDao.getTotalBlogs(params);
         PageResult pageResult = new PageResult(blogListVos,total,pageUtil.getLimit(),pageUtil.getPage());
         return pageResult;
+    }
+
+    @Override
+    public PageResult getBlogsPageBySearch(String keyword, int page) {
+        Map params = new HashMap();
+        params.put("page",page);
+        params.put("limit", 8);
+        params.put("blogStatus",1);
+        params.put("keyword",keyword);
+        PageUtil pageUtil=new PageUtil(params);
+        List<Blog> blogs=blogDao.findBlogList(params);
+        List<BlogListVo> blogListVos=getBlogListVOsByBlogs(blogs);
+        int total=blogDao.getTotalBlogs(params);
+        PageResult pageResult = new PageResult(blogListVos,total,pageUtil.getLimit(),pageUtil.getPage());
+        return pageResult;
+    }
+
+    @Override
+    public PageResult getBlogsPageByCategory(String categoryName, int page) {
+        if(PatternUtil.validKeyword(categoryName)){
+            BlogCategory blogCategory=blogCategoryDao.selectByCategoryName(categoryName);
+            if("默认分类".equals(categoryName) && blogCategory == null){
+                blogCategory = new BlogCategory();
+                blogCategory.setCategoryId(0);
+            }
+            if(blogCategory!=null && page > 0){
+                Map params = new HashMap();
+                params.put("page",page);
+                params.put("limit", 8);
+                params.put("blogStatus",1);
+                params.put("blogCategoryId",blogCategory.getCategoryId());
+                PageUtil pageUtil=new PageUtil(params);
+                List<Blog> blogs=blogDao.findBlogList(params);
+                List<BlogListVo> blogListVos=getBlogListVOsByBlogs(blogs);
+                int total=blogDao.getTotalBlogs(params);
+                PageResult pageResult = new PageResult(blogListVos,total,pageUtil.getLimit(),pageUtil.getPage());
+                return pageResult;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public PageResult getBlogsPageByTagName(String tagName, int page) {
+        if(PatternUtil.validKeyword(tagName)){
+            BlogTag blogTag=blogTagDao.selectByTagName(tagName);
+            if(blogTag!=null && page > 0){
+                Map params = new HashMap();
+                params.put("page",page);
+                params.put("limit", 8);
+                params.put("tagId",blogTag.getTagId());
+                PageUtil pageUtil=new PageUtil(params);
+                List<Blog> blogs=blogDao.getBlogPageByTagId(params);
+                List<BlogListVo> blogListVos=getBlogListVOsByBlogs(blogs);
+                int total=blogDao.getTotalBlogByTagId(params);
+                PageResult pageResult = new PageResult(blogListVos,total,pageUtil.getLimit(),pageUtil.getPage());
+                return pageResult;
+            }
+        }
+        return null;
     }
 }

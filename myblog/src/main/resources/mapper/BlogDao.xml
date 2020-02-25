@@ -32,6 +32,29 @@
     <if test="blogStatus!=null">
       AND blog_status = #{blogStatus}
     </if>
+    <if test="keyword!=null">
+      AND (blog_title like CONCAT('%','${keyword}','%' ) or blog_category_name like CONCAT('%','${keyword}','%' ))
+    </if>
+    <if test="blogCategoryId!=null">
+      AND blog_category_id = #{blogCategoryId}
+    </if>
+  </select>
+  <select id="getBlogPageByTagId" parameterType="Map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from tb_blog
+    where is_deleted=0 and blog_status=1 and blog_id in (
+    select blog_id from tb_blog_tag_relation where tag_id = #{tagId}
+    ) order by blog_id desc
+    <if test="start!=null and limit!=null">
+      limit #{start},#{limit}
+    </if>
+  </select>
+  <select id="getTotalBlogByTagId" parameterType="Map" resultType="int">
+    select count(*)  from tb_blog
+    where is_deleted=0 and blog_status=1 and blog_id in (
+    select blog_id from tb_blog_tag_relation where tag_id = #{tagId}
+    )
   </select>
   <select id="findBlogList" parameterType="Map" resultMap="BaseResultMap">
     select
@@ -40,6 +63,12 @@
     where is_deleted=0
     <if test="blogStatus!=null">
       AND blog_status = #{blogStatus}
+    </if>
+    <if test="keyword!=null">
+      AND (blog_title like CONCAT('%','${keyword}','%' ) or blog_category_name like CONCAT('%','${keyword}','%' ))
+    </if>
+    <if test="blogCategoryId!=null">
+      AND blog_category_id = #{blogCategoryId}
     </if>
     order by blog_id desc
     <if test="start!=null and limit!=null">

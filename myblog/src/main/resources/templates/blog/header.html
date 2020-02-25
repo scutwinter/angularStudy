@@ -46,16 +46,21 @@
 
     <div class="widewrapper subheader">
         <div class="container">
-            <div class="clean-breadcrumb">
-                <th:block th:text="${pageName}"></th:block>
-            </div>
-            <div class="clean-searchbox">
-                <form method="get" accept-charset="utf-8">
-                    <input class="searchfield" id="searchbox" type="text" placeholder="  搜索">
-                    <button class="searchbutton" id="searchbutton">
-                        <i class="fa fa-search"></i>
-                    </button>
-                </form>
+            <div class="widewrapper subheader">
+                <div class="container">
+                    <div class="clean-breadcrumb">
+                        <th:block th:text="${pageName}"></th:block>
+                        <th:block th:if="${null != keyword}" th:text="' : '+${keyword}"></th:block>
+                    </div>
+                    <div class="clean-searchbox">
+                        <form method="get" onsubmit="return false;" accept-charset="utf-8">
+                            <input class="searchfield" id="searchbox" type="text" placeholder="  搜索">
+                            <button class="searchbutton" id="searchbutton" onclick="search()">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

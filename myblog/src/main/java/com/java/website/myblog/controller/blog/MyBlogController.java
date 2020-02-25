@@ -36,4 +36,49 @@ public class MyBlogController {
         request.setAttribute("pageName","首页");
         return "blog/index";
     }
+
+    @GetMapping({"/search/{keyword}"})
+    public String searchByKeyWord(HttpServletRequest request,@PathVariable("keyword") String keyword){
+        return search(request,keyword,1);
+    }
+
+    @GetMapping({"/search/{keyword}/{page}"})
+    public String search(HttpServletRequest request,@PathVariable("keyword") String keyword,@PathVariable("page") Integer page){
+        PageResult blogPageResult = blogService.getBlogsPageBySearch(keyword,page);
+        request.setAttribute("blogPageResult",blogPageResult);
+        request.setAttribute("pageName","搜索");
+        request.setAttribute("pageUrl","search");
+        request.setAttribute("keyword",keyword);
+        return "blog/list";
+    }
+
+    @GetMapping({"/category/{categoryName}"})
+    public String searchByCategory(HttpServletRequest request,@PathVariable("categoryName") String categoryName){
+        return searchByCategory(request,categoryName,1);
+    }
+
+    @GetMapping({"/category/{categoryName}/{page}"})
+    public String searchByCategory(HttpServletRequest request,@PathVariable("categoryName") String categoryName,@PathVariable("page") Integer page){
+        PageResult blogPageResult = blogService.getBlogsPageByCategory(categoryName,page);
+        request.setAttribute("blogPageResult",blogPageResult);
+        request.setAttribute("pageName","分类");
+        request.setAttribute("pageUrl","category");
+        request.setAttribute("keyword",categoryName);
+        return "blog/list";
+    }
+
+    @GetMapping({"/tag/{tagName}"})
+    public String searchByTag(HttpServletRequest request,@PathVariable("tagName") String tagName){
+        return searchByTag(request,tagName,1);
+    }
+
+    @GetMapping({"/tag/{tagName}/{page}"})
+    public String searchByTag(HttpServletRequest request,@PathVariable("tagName") String tagName,@PathVariable("page") Integer page){
+        PageResult blogPageResult = blogService.getBlogsPageByTagName(tagName,page);
+        request.setAttribute("blogPageResult",blogPageResult);
+        request.setAttribute("pageName","标签");
+        request.setAttribute("pageUrl","tag");
+        request.setAttribute("keyword",tagName);
+        return "blog/list";
+    }
 }

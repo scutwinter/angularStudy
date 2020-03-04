@@ -95,6 +95,18 @@ public class BlogController {
         }
     }
 
+    /**
+     * 博客保存服务
+     * @param blogTitle
+     * @param blogSubUrl
+     * @param blogCategoryId
+     * @param blogTags
+     * @param blogContent
+     * @param blogCoverImage
+     * @param blogStatus
+     * @param enableComment
+     * @return
+     */
     @PostMapping("/blogs/save")
     @ResponseBody
     public Result save(@RequestParam("blogTitle") String blogTitle,

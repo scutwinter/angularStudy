@@ -1,5 +1,6 @@
 package com.java.website.myblog.service;
 
+import com.java.website.myblog.controller.vo.BlogDetailVO;
 import com.java.website.myblog.controller.vo.SimpleBlogListVo;
 import com.java.website.myblog.entity.Blog;
 import com.java.website.myblog.util.PageResult;
@@ -18,4 +19,5 @@ public interface BlogService {
     PageResult getBlogsPageBySearch(String keyword,int page);
     PageResult getBlogsPageByCategory(String categoryName, int page);
     PageResult getBlogsPageByTagName(String tagName,int page);
+    BlogDetailVO getBlogDetail(Long blogId);
 }

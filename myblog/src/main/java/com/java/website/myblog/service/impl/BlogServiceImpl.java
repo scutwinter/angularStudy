@@ -1,5 +1,6 @@
 package com.java.website.myblog.service.impl;
 
+import com.java.website.myblog.controller.vo.BlogDetailVO;
 import com.java.website.myblog.controller.vo.BlogListVo;
 import com.java.website.myblog.controller.vo.SimpleBlogListVo;
 import com.java.website.myblog.dao.BlogCategoryDao;
@@ -11,6 +12,7 @@ import com.java.website.myblog.entity.BlogCategory;
 import com.java.website.myblog.entity.BlogTag;
 import com.java.website.myblog.entity.BlogTagRelation;
 import com.java.website.myblog.service.BlogService;
+import com.java.website.myblog.util.MarkDownUtil;
 import com.java.website.myblog.util.PageResult;
 import com.java.website.myblog.util.PageUtil;
 import com.java.website.myblog.util.PatternUtil;
@@ -19,12 +21,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.thymeleaf.util.PatternUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -315,4 +315,43 @@ public class BlogServiceImpl implements BlogService {
         }
         return null;
     }
+
+    private BlogDetailVO getBlogDetailVO(Blog blog){
+        if(blog !=null && blog.getBlogStatus() == 1){
+            //增加浏览量
+            blog.setBlogViews(blog.getBlogViews()+1);
+            blogDao.updateByPrimaryKey(blog);
+            BlogDetailVO blogDetailVO = new BlogDetailVO();
+            BeanUtils.copyProperties(blog,blogDetailVO);
+            //md格式转换
+            blogDetailVO.setBlogContent(MarkDownUtil.mdToHtml(blogDetailVO.getBlogContent()));
+            BlogCategory blogCategory=blogCategoryDao.selectByPrimaryKey(blog.getBlogCategoryId());
+            if(blogCategory !=null){
+                blogCategory = new BlogCategory();
+                blogCategory.setCategoryId(0);
+                blogCategory.setCategoryName("默认分类");
+                blogCategory.setCategoryIcon("/admin/dist/img/category/00.png");
+            }
+            //分类信息
+            blogDetailVO.setBlogCategoryIcon(blogCategory.getCategoryIcon());
+            if(!StringUtils.isEmpty(blog.getBlogTags())){
+                List<String> tags= Arrays.asList(blog.getBlogTags().split(","));
+                blogDetailVO.setBlogTags(tags);
+            }
+            return blogDetailVO;
+        }
+        return null;
+    }
+
+    @Override
+    public BlogDetailVO getBlogDetail(Long blogId) {
+        Blog blog=blogDao.selectByPrimaryKey(blogId);
+        //不为空且状态已经发布
+        BlogDetailVO blogDetailVO=getBlogDetailVO(blog);
+        if (blogDetailVO !=null){
+            return blogDetailVO;
+        }
+        return null;
+    }
+
 }

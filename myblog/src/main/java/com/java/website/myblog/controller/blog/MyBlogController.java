@@ -1,5 +1,6 @@
 package com.java.website.myblog.controller.blog;
 
+import com.java.website.myblog.controller.vo.BlogDetailVO;
 import com.java.website.myblog.service.BlogService;
 import com.java.website.myblog.service.TagService;
 import com.java.website.myblog.util.PageResult;
@@ -80,5 +81,15 @@ public class MyBlogController {
         request.setAttribute("pageUrl","tag");
         request.setAttribute("keyword",tagName);
         return "blog/list";
+    }
+
+    @GetMapping("/blog/{blogId}")
+    public String detail(HttpServletRequest request,@PathVariable("blogId") Long blogId){
+        BlogDetailVO blogDetailVO = blogService.getBlogDetail(blogId);
+        if(blogDetailVO !=null){
+            request.setAttribute("blogDetailVO",blogDetailVO);
+        }
+        request.setAttribute("pageName","详情");
+        return "blog/detail";
     }
 }

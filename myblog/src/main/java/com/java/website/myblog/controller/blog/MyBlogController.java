@@ -92,4 +92,15 @@ public class MyBlogController {
         request.setAttribute("pageName","详情");
         return "blog/detail";
     }
+
+
+    /**
+     * 关于页面 以及其他配置了subUrl的文章页
+     *
+     * @return
+     */
+    @GetMapping({"/{subUrl}"})
+    public String detail(HttpServletRequest request, @PathVariable("subUrl") String subUrl) {
+        return "error/error_400";
+    }
 }

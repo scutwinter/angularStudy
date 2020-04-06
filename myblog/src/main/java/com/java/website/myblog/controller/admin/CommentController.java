@@ -6,10 +6,7 @@ import com.java.website.myblog.service.CommentService;
 import com.java.website.myblog.util.PageUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -40,5 +37,44 @@ public class CommentController {
         }
         PageUtil pageUtil= new PageUtil(params);
         return ResultGenerator.genSuccessResult(commentService.getCommentsPage(pageUtil));
+    }
+
+    @PostMapping("/comments/checkDone")
+    @ResponseBody
+    public Result checkDone(@RequestBody Integer[] ids){
+        if(ids.length<1){
+            return ResultGenerator.genFailResult("参数异常！");
+        }
+        if (commentService.checkDone(ids)){
+            return ResultGenerator.genSuccessResult();
+        }else{
+            return ResultGenerator.genFailResult("审核失败");
+        }
+    }
+
+    @PostMapping("/comments/reply")
+    @ResponseBody
+    public Result reply(@RequestParam("commentId") Long commentId,@RequestParam("replyBody") String replyBody){
+        if(commentId==null || commentId<1 || StringUtils.isEmpty(replyBody)){
+            return ResultGenerator.genFailResult("参数异常！");
+        }
+        if(commentService.reply(commentId,replyBody)){
+            return ResultGenerator.genSuccessResult();
+        }else{
+            return ResultGenerator.genFailResult("回复失败");
+        }
+    }
+
+    @PostMapping("/comments/delete")
+    @ResponseBody
+    public Result delete(@RequestBody Integer[] ids){
+        if (ids.length <1){
+            return ResultGenerator.genFailResult("参数异常！");
+        }
+        if (commentService.deleteBatch(ids)){
+            return ResultGenerator.genSuccessResult();
+        }else{
+            return ResultGenerator.genFailResult("删除失败");
+        }
     }
 }

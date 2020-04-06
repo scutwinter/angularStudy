@@ -25,4 +25,6 @@ public interface BlogCommentDao {
     int getTotalComments();
 
     int checkDone(Integer[] ids);
+
+    int deleteBatch(Integer[] ids);
 }

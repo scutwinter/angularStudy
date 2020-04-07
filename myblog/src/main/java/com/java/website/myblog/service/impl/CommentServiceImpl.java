@@ -7,9 +7,12 @@ import com.java.website.myblog.util.PageResult;
 import com.java.website.myblog.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -19,7 +22,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public PageResult getCommentsPage(PageUtil pageUtil) {
         List<BlogComment> blogComments=blogCommentDao.findBlogCommentList(pageUtil);
-        int total = blogCommentDao.getTotalComments();
+        int total = blogCommentDao.getTotalComments(pageUtil);
         PageResult pageResult = new PageResult(blogComments,total,pageUtil.getLimit(),pageUtil.getPage());
         return pageResult;
     }
@@ -43,5 +46,30 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Boolean deleteBatch(Integer[] ids) {
         return blogCommentDao.deleteBatch(ids)>0;
+    }
+
+    @Override
+    public Boolean addComment(BlogComment blogComment) {
+        return blogCommentDao.insertSelective(blogComment)>0;
+    }
+
+    @Override
+    public PageResult getCommentPageByBlogIdAndPageNum(Long blogId, int page) {
+        if(page<1){
+            return null;
+        }
+        Map params = new HashMap();
+        params.put("page",page);
+        params.put("limit",8);
+        params.put("blogId",blogId);
+        params.put("commentStatus",1);
+        PageUtil pageUtil = new PageUtil(params);
+        List<BlogComment> blogComments = blogCommentDao.findBlogCommentList(pageUtil);
+        if(!CollectionUtils.isEmpty(blogComments)){
+            int total = blogCommentDao.getTotalComments(pageUtil);
+            PageResult pageResult=new PageResult(blogComments,total,pageUtil.getLimit(),pageUtil.getPage());
+            return pageResult;
+        }
+        return null;
     }
 }

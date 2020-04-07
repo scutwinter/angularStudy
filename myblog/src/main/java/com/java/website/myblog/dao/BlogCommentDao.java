@@ -22,7 +22,7 @@ public interface BlogCommentDao {
 
     List<BlogComment> findBlogCommentList(Map param);
 
-    int getTotalComments();
+    int getTotalComments(Map param);
 
     int checkDone(Integer[] ids);
 

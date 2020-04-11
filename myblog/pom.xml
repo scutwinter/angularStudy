@@ -13,6 +13,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>myblog</name>
     <description>Demo project for Spring Boot</description>
+    <packaging>war</packaging>
 
     <properties>
         <java.version>1.8</java.version>
@@ -22,6 +23,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- Thymeleaf 模板引擎依赖 -->
@@ -96,7 +103,9 @@
                 <executions>
                     <execution>
                         <id>Generate MyBatis Artifacts</id>
-                        <phase>package</phase>
+<!--                        解决在打包时执行MyBatis-Generator-->
+<!--                        <phase>package</phase>-->
+                        <phase>deploy</phase>
                         <goals>
                             <goal>generate</goal>
                         </goals>

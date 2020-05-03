@@ -68,4 +68,9 @@ public class BlogCategoryServiceImpl implements BlogCategoryService {
     public List<BlogCategory> getAllCategories() {
         return blogCategoryDao.findCategoryList(null);
     }
+
+    @Override
+    public int getTotalCategories() {
+        return blogCategoryDao.getTotalCategories();
+    }
 }

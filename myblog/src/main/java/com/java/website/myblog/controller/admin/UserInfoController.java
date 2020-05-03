@@ -1,7 +1,8 @@
 package com.java.website.myblog.controller.admin;
 
+import com.java.website.myblog.controller.common.ResultGenerator;
 import com.java.website.myblog.entity.UserInfo;
-import com.java.website.myblog.service.UserInfoService;
+import com.java.website.myblog.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,21 @@ import javax.servlet.http.HttpSession;
 public class UserInfoController {
     @Resource
     private UserInfoService userInfoService;
+
+    @Resource
+    private BlogService blogService;
+
+    @Resource
+    private BlogCategoryService blogCategoryService;
+
+    @Resource
+    private LinkService linkService;
+
+    @Resource
+    private TagService tagService;
+
+    @Resource
+    private CommentService commentService;
 
     @RequestMapping(value = "/login",method =RequestMethod.GET)
     public String login(){
@@ -52,7 +68,13 @@ public class UserInfoController {
 
     }
     @GetMapping({"", "/", "/index", "/index.html"})
-    public String index() {
+    public String index(HttpServletRequest request) {
+        request.setAttribute("path","index");
+        request.setAttribute("blogCount",blogService.getTotalBlogs());
+        request.setAttribute("categoryCount",blogCategoryService.getTotalCategories());
+        request.setAttribute("commentCount",commentService.getTotalComments());
+        request.setAttribute("tagCount",tagService.getTotalBlogTag());
+        request.setAttribute("linkCount",linkService.getTotalLinks());
         return "admin/index";
     }
 

@@ -11,4 +11,5 @@ public interface CommentService {
     public Boolean deleteBatch(Integer[] ides);
     public Boolean addComment(BlogComment blogComment);
     public PageResult getCommentPageByBlogIdAndPageNum(Long blogId,int page);
+    public int getTotalComments();
 }

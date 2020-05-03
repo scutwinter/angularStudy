@@ -72,4 +72,9 @@ public class CommentServiceImpl implements CommentService {
         }
         return null;
     }
+
+    @Override
+    public int getTotalComments() {
+        return blogCommentDao.getTotalComments(null);
+    }
 }

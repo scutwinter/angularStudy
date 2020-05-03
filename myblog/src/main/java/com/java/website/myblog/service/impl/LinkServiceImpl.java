@@ -43,4 +43,9 @@ public class LinkServiceImpl implements LinkService {
     public Boolean deleteBatch(Integer[] ids) {
         return linkDao.deleteBatch(ids)>0;
     }
+
+    @Override
+    public int getTotalLinks() {
+        return linkDao.getTotalLinks();
+    }
 }

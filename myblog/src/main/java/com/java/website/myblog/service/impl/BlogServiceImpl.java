@@ -354,4 +354,8 @@ public class BlogServiceImpl implements BlogService {
         return null;
     }
 
+    @Override
+    public int getTotalBlogs() {
+        return blogDao.getTotalBlogs(null);
+    }
 }

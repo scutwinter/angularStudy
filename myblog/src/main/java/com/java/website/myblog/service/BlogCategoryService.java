@@ -20,4 +20,6 @@ public interface BlogCategoryService {
 
     List<BlogCategory> getAllCategories();
 
+    int getTotalCategories();
+
 }

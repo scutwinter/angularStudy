@@ -15,4 +15,6 @@ public interface TagService {
 
     List<BlogTagCount> getBlogTagCountForIndex();
 
+    int getTotalBlogTag();
+
 }

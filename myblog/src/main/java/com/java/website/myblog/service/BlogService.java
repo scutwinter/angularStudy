@@ -20,4 +20,5 @@ public interface BlogService {
     PageResult getBlogsPageByCategory(String categoryName, int page);
     PageResult getBlogsPageByTagName(String tagName,int page);
     BlogDetailVO getBlogDetail(Long blogId);
+    int getTotalBlogs();
 }

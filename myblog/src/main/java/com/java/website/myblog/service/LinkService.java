@@ -19,4 +19,6 @@ public interface LinkService {
 
     Boolean updateLink(Link tempLink);
 
+    int getTotalLinks();
+
 }

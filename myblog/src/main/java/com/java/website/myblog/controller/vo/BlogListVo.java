@@ -1,5 +1,9 @@
 package com.java.website.myblog.controller.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.Date;
+
 public class BlogListVo {
     private Long blogId;
     private String blogTitle;
@@ -7,6 +11,9 @@ public class BlogListVo {
     private Integer blogCategoryId;
     private String blogCategoryIcon;
     private String blogCategoryName;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date createTime;
 
     public Long getBlogId() {
         return blogId;
@@ -54,5 +61,13 @@ public class BlogListVo {
 
     public void setBlogCategoryName(String blogCategoryName) {
         this.blogCategoryName = blogCategoryName;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

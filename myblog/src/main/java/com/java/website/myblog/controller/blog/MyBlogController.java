@@ -4,9 +4,8 @@ import com.java.website.myblog.controller.common.Result;
 import com.java.website.myblog.controller.common.ResultGenerator;
 import com.java.website.myblog.controller.vo.BlogDetailVO;
 import com.java.website.myblog.entity.BlogComment;
-import com.java.website.myblog.service.BlogService;
-import com.java.website.myblog.service.CommentService;
-import com.java.website.myblog.service.TagService;
+import com.java.website.myblog.entity.Link;
+import com.java.website.myblog.service.*;
 import com.java.website.myblog.util.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -15,9 +14,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class MyBlogController {
+
+    public static String theme = "yummy-jekyll/";
 
     @Resource
     private BlogService blogService;
@@ -25,6 +28,10 @@ public class MyBlogController {
     private TagService tagService;
     @Resource
     private CommentService commentService;
+    @Resource
+    private LinkService linkService;
+    @Resource
+    private BlogCategoryService blogCategoryService;
 
     @GetMapping({"/","/index","index.html"})
     public String index(HttpServletRequest request){
@@ -42,7 +49,7 @@ public class MyBlogController {
         request.setAttribute("hotBlogs",blogService.getBlogListForIndexPage(0));
         request.setAttribute("hotTags",tagService.getBlogTagCountForIndex());
         request.setAttribute("pageName","首页");
-        return "blog/index";
+        return "blog/"+theme+"index";
     }
 
     @GetMapping({"/search/{keyword}"})
@@ -57,7 +64,33 @@ public class MyBlogController {
         request.setAttribute("pageName","搜索");
         request.setAttribute("pageUrl","search");
         request.setAttribute("keyword",keyword);
-        return "blog/list";
+        return "blog/"+theme+"list";
+    }
+
+    @GetMapping({"/link"})
+    public String link(HttpServletRequest request){
+        request.setAttribute("pageName","友情链接");
+        Map<Byte, List<Link>> linkMap= linkService.getLinksForLinkPage();
+        if(linkMap!=null){
+            if (linkMap.containsKey((byte) 0)){
+                request.setAttribute("favoriteLinks",linkMap.get((byte) 0));
+            }
+            if (linkMap.containsKey((byte) 1)){
+                request.setAttribute("recommendLinks",linkMap.get((byte) 1));
+            }
+            if (linkMap.containsKey((byte) 2)){
+                request.setAttribute("personalLinks",linkMap.get((byte) 2));
+            }
+        }
+        return "blog/"+theme+"link";
+    }
+
+    @GetMapping({"/categories"})
+    public String categories(HttpServletRequest request){
+        request.setAttribute("hotTags",tagService.getBlogTagCountForIndex());
+        request.setAttribute("categories",blogCategoryService.getAllCategories());
+        request.setAttribute("pageName","分类页面");
+        return "blog/"+theme+"category";
     }
 
     @GetMapping({"/category/{categoryName}"})
@@ -72,7 +105,7 @@ public class MyBlogController {
         request.setAttribute("pageName","分类");
         request.setAttribute("pageUrl","category");
         request.setAttribute("keyword",categoryName);
-        return "blog/list";
+        return "blog/"+theme+"list";
     }
 
     @GetMapping({"/tag/{tagName}"})
@@ -87,7 +120,7 @@ public class MyBlogController {
         request.setAttribute("pageName","标签");
         request.setAttribute("pageUrl","tag");
         request.setAttribute("keyword",tagName);
-        return "blog/list";
+        return "blog/"+theme+"list";
     }
 
     @GetMapping("/blog/{blogId}")
@@ -98,7 +131,7 @@ public class MyBlogController {
             request.setAttribute("commentPageResult",commentService.getCommentPageByBlogIdAndPageNum(blogId,commentPage));
         }
         request.setAttribute("pageName","详情");
-        return "blog/detail";
+        return "blog/"+theme+"detail";
     }
 
 

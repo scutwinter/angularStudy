@@ -6,22 +6,22 @@
             <div class="row">
                 <div class="col-md-3 footer-widget">
                     <h3><i class="fa fa-user"></i>About</h3>
-                    <p>your singal blog.</p>
+                    <p th:text="${configurations.get('websiteName')}">your singal blog.</p>
                 </div>
 
                 <div class="col-md-3 footer-widget">
                     <h3><i class="fa fa-info-circle"></i>ICP</h3>
-                    <p>浙ICP备 xxxxxx-x号</p>
+                    <p th:text="${configurations.get('footerICP')}">浙ICP备 xxxxxx-x号</p>
                 </div>
 
                 <div class="col-md-3 footer-widget">
-                    <h3><i class="fa fa-copyright"></i>Copy Right</h3>
-                    <p>2018 十三</p>
+                    <h3><i class="fa fa-copyright"></i>Copyright</h3>
+                    <p th:text="${configurations.get('footerCopyRight')}">2019 Winter</p>
                 </div>
 
-                <div class="col-md-3 footer-widget">
+                <div class="col-md-3 footer-widget" >
                     <h3><i class="fa fa-arrow-circle-o-up"></i>Powered By</h3>
-                    zhenfeng13
+                    <p th:text="${configurations.get('yourName')}"></p>
                 </div>
 
             </div>

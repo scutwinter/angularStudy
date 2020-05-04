@@ -6,6 +6,9 @@ import com.java.website.myblog.util.PageResult;
 import com.java.website.myblog.util.PageUtil;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.Map;
+
 
 @Component
 public interface LinkService {
@@ -20,5 +23,7 @@ public interface LinkService {
     Boolean updateLink(Link tempLink);
 
     int getTotalLinks();
+
+    Map<Byte, List<Link>> getLinksForLinkPage();
 
 }

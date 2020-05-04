@@ -7,8 +7,12 @@ import com.java.website.myblog.util.PageResult;
 import com.java.website.myblog.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class LinkServiceImpl implements LinkService {
@@ -47,5 +51,15 @@ public class LinkServiceImpl implements LinkService {
     @Override
     public int getTotalLinks() {
         return linkDao.getTotalLinks();
+    }
+
+    @Override
+    public Map<Byte, List<Link>> getLinksForLinkPage() {
+        List<Link> links= linkDao.findLinkList(null);
+        if (!CollectionUtils.isEmpty(links)){
+            Map<Byte,List<Link>> linksMap = links.stream().collect(Collectors.groupingBy(Link::getLinkType));
+            return linksMap;
+        }
+        return null;
     }
 }

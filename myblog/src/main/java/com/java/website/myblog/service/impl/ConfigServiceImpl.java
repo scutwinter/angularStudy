@@ -24,6 +24,7 @@ public class ConfigServiceImpl implements ConfigService {
     public static final String yourAvatar = "/admin/dist/img/winter.jpg";
     public static final String yourEmail = "scutwinter@vip.qq.com";
     public static final String yourName = "Winter";
+    public static final String yourJob = "程序设计专家";
     public static final String footerAbout = "Your personal blog. have fun.";
     public static final String footerICP = "粤ICP备 XXXXX-X号";
     public static final String footerCopyRight = "@2020 Winter";
@@ -67,6 +68,9 @@ public class ConfigServiceImpl implements ConfigService {
             }
             if ("yourName".equals(config.getKey()) && StringUtils.isEmpty(config.getValue())){
                 config.setValue(yourName);
+            }
+            if ("yourJob".equals(config.getKey()) && StringUtils.isEmpty(config.getValue())){
+                config.setValue(yourJob);
             }
             if ("footerAbout".equals(config.getKey()) && StringUtils.isEmpty(config.getValue())){
                 config.setValue(footerAbout);

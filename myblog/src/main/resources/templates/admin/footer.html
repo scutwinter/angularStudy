@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <footer class="main-footer" th:fragment="footer-fragment">
-    <strong>Copyright &copy; 2020 <a href="##">winter</a>.</strong>
+    <strong th:text="${configurations.get('footerCopyRight')}">54</strong>.<a href="##" th:text="${configurations.get('websiteName')}">54</a>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
-        <b>my personal blog #Version</b> 1.0
+        <b th:text="${configurations.get('footerAbout')}">54</b>
     </div>
 </footer>
 </html>

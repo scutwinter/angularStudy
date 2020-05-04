@@ -61,7 +61,7 @@ public class BlogController {
                                      @RequestParam(name = "editormd-image-file",required = true)
                                      MultipartFile file) throws IOException, URISyntaxException{
 //        String FILE_UPLOAD_DIC = "/home/project/upload/";
-        String FILE_UPLOAD_DIC ="D:\\SourceControl\\Git\\angularStudy\\myblog\\upload\\";
+        String FILE_UPLOAD_DIC ="/Users/winter/source/gitSource/myblog/upload/";
         String fileName = file.getOriginalFilename();
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
         //生成文件名称通用方法

@@ -20,7 +20,7 @@ public class ConfigurationController {
     @GetMapping("/configurations")
     public String list(HttpServletRequest request){
         request.setAttribute("path","configurations");
-        request.setAttribute("configurations",configService.getAllConfigs());
+        request.setAttribute("configs",configService.getAllConfigs());
         return "admin/configuration";
     }
 
@@ -48,9 +48,10 @@ public class ConfigurationController {
 
     @PostMapping("/configurations/userInfo")
     @ResponseBody
-    public Result website(@RequestParam(value = "yourAvatar",required = false) String yourAvatar,
+    public Result userInfo(@RequestParam(value = "yourAvatar",required = false) String yourAvatar,
                           @RequestParam(value = "yourEmail",required = false) String yourEmail,
-                          @RequestParam(value = "yourName",required = false) String yourName){
+                          @RequestParam(value = "yourName",required = false) String yourName,
+                          @RequestParam(value = "yourJob",required = false) String yourJob){
         int updateResult = 0;
         if (!StringUtils.isEmpty(yourAvatar)){
             updateResult += configService.updateConfig("yourAvatar",yourAvatar);
@@ -61,13 +62,16 @@ public class ConfigurationController {
         if (!StringUtils.isEmpty(yourName)){
             updateResult += configService.updateConfig("yourName",yourName);
         }
+        if (!StringUtils.isEmpty(yourJob)){
+            updateResult += configService.updateConfig("yourJob",yourJob);
+        }
 
         return ResultGenerator.genSuccessResult(updateResult>0);
     }
 
     @PostMapping("/configurations/footer")
     @ResponseBody
-    public Result website(@RequestParam(value = "footerAbout",required = false) String footerAbout,
+    public Result footer(@RequestParam(value = "footerAbout",required = false) String footerAbout,
                           @RequestParam(value = "footerICP",required = false) String footerICP,
                           @RequestParam(value = "footerCopyRight",required = false) String footerCopyRight,
                           @RequestParam(value = "footerPoweredBy",required = false) String footerPoweredBy,

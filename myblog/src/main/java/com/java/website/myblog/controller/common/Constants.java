@@ -7,4 +7,6 @@ public class Constants {
     public static final int RESULT_CODE_NOT_LOGIN = 402;  // 未登录
     public static final int RESULT_CODE_PARAM_ERROR = 406;  // 传参错误
     public static final int RESULT_CODE_SERVER_ERROR = 500;  // 服务器错误
+    public final static String FILE_UPLOAD_DIC="/home/project/upload/";
+
 }

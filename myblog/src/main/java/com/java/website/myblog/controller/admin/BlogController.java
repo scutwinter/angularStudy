@@ -1,5 +1,6 @@
 package com.java.website.myblog.controller.admin;
 
+import com.java.website.myblog.controller.common.Constants;
 import com.java.website.myblog.controller.common.Result;
 import com.java.website.myblog.controller.common.ResultGenerator;
 import com.java.website.myblog.entity.Blog;
@@ -61,7 +62,7 @@ public class BlogController {
                                      @RequestParam(name = "editormd-image-file",required = true)
                                      MultipartFile file) throws IOException, URISyntaxException{
 //        String FILE_UPLOAD_DIC = "/home/project/upload/";
-        String FILE_UPLOAD_DIC ="/Users/winter/source/gitSource/myblog/upload/";
+//        String FILE_UPLOAD_DIC ="/Users/winter/source/gitSource/myblog/upload/";
         String fileName = file.getOriginalFilename();
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
         //生成文件名称通用方法
@@ -71,9 +72,9 @@ public class BlogController {
         tempName.append(sdf.format(new Date())).append(random.nextInt(100)).append(suffixName);
         String newFileName = tempName.toString();
         //创建文件
-        File destFile = new File(FILE_UPLOAD_DIC+newFileName);
+        File destFile = new File(Constants.FILE_UPLOAD_DIC +newFileName);
         String fileUrl = MyBlogUtils.getHost(new URI(request.getRequestURL() + ""))+"/upload/"+newFileName;
-        File fileDirectory = new File(FILE_UPLOAD_DIC);
+        File fileDirectory = new File(Constants.FILE_UPLOAD_DIC);
         try{
             if(!fileDirectory.exists()){
                 if(!fileDirectory.mkdir()){

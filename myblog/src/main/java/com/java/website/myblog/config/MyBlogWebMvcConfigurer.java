@@ -1,5 +1,6 @@
 package com.java.website.myblog.config;
 
+import com.java.website.myblog.controller.common.Constants;
 import com.java.website.myblog.entity.BlogConfig;
 import com.java.website.myblog.interceptor.AdminLoginInterceptor;
 import com.java.website.myblog.service.ConfigService;
@@ -38,8 +39,8 @@ public class MyBlogWebMvcConfigurer implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         //增加一个自定义静态资源映射，使得 upload 下的静态资源可以通过该映射地址被访问到
-        registry.addResourceHandler("/upload/**").addResourceLocations("file:D:/SourceControl/Git/angularStudy/myblog/upload/");
-
+//        registry.addResourceHandler("/upload/**").addResourceLocations("file:/Users/winter/source/gitSource/myblog/upload/");
+        registry.addResourceHandler("/upload/**").addResourceLocations("file:" + Constants.FILE_UPLOAD_DIC);
     }
 
     @Override

@@ -3,6 +3,8 @@ package com.java.website.myblog.controller.blog;
 import com.java.website.myblog.controller.common.Result;
 import com.java.website.myblog.controller.common.ResultGenerator;
 import com.java.website.myblog.controller.vo.BlogDetailVO;
+import com.java.website.myblog.entity.Blog;
+import com.java.website.myblog.entity.BlogCategoryCount;
 import com.java.website.myblog.entity.BlogComment;
 import com.java.website.myblog.entity.Link;
 import com.java.website.myblog.service.*;
@@ -83,6 +85,21 @@ public class MyBlogController {
             }
         }
         return "blog/"+theme+"link";
+    }
+
+    /**
+     * 归档页面
+     * @param request
+     * @return
+     */
+    @GetMapping({"/blog"})
+    public String blog(HttpServletRequest request){
+        request.setAttribute("pageName","博客归档");
+        List<Blog> blogs = blogService.getBlogList(null);
+        List<BlogCategoryCount> blogCategoryCountList = blogCategoryService.getBlogCategoryCount();
+        request.setAttribute("blogs",blogs);
+        request.setAttribute("blogCategoryCounts",blogCategoryCountList);
+        return "blog/"+theme+"blog";
     }
 
     @GetMapping({"/categories"})

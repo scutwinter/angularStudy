@@ -9,6 +9,11 @@
     <result column="is_deleted" jdbcType="TINYINT" property="isDeleted" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
+  <resultMap id="BaseCountResultMap" type="com.java.website.myblog.entity.BlogCategoryCount">
+    <id column="category_id" jdbcType="INTEGER" property="categoryId"/>
+    <result column="category_count" jdbcType="INTEGER" property="categoryCount"/>
+    <result column="category_name" jdbcType="VARCHAR" property="categoryName"/>
+  </resultMap>
   <sql id="Base_Column_List">
     category_id, category_name, category_icon, category_rank, is_deleted, create_time
   </sql>
@@ -22,6 +27,13 @@
       limit #{start},#{limit}
     </if>
   </select>
+  <select id="getCategoryCount" resultMap="BaseCountResultMap">
+        select * from
+        (select blog_category_id as category_id,blog_category_name as category_name,count(blog_category_id) as category_count from tb_blog where is_deleted=0 group by blog_category_id,blog_category_name
+        UNION
+        select 0 as category_id,'All' as category_name,count(*) as count from tb_blog where is_deleted=0) t_r
+        order by category_id
+    </select>
   <select id="getTotalCategories" resultType="int">
     select count(*)  from tb_blog_category
     where is_deleted=0

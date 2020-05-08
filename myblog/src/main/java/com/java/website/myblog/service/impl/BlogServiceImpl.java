@@ -195,6 +195,11 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    public List<Blog> getBlogList(PageUtil pageUtil) {
+        return blogDao.findBlogList(pageUtil);
+    }
+
+    @Override
     public Blog getBlogById(long blogId) {
         return blogDao.selectByPrimaryKey(blogId);
     }
@@ -357,5 +362,19 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public int getTotalBlogs() {
         return blogDao.getTotalBlogs(null);
+    }
+
+    @Override
+    public List<Blog> getBlogListByCategory(Integer categoryId) {
+        Map params = new HashMap();
+        if(categoryId>0){
+            params.put("blogStatus",1);
+            params.put("blogCategoryId",categoryId);
+            PageUtil pageUtil=new PageUtil(params);
+            List<Blog> blogs=blogDao.findBlogList(params);
+            return blogs;
+        }else{
+            return null;
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.java.website.myblog.dao;
 
 import com.java.website.myblog.entity.BlogCategory;
+import com.java.website.myblog.entity.BlogCategoryCount;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
@@ -30,4 +31,6 @@ public interface BlogCategoryDao {
     int getTotalCategories();
 
     List<BlogCategory> selectByCategoryIds(List<Integer> categoryIds);
+
+    List<BlogCategoryCount> getCategoryCount();
 }

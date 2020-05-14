@@ -1,5 +1,4 @@
 package com.java.website.myblog.config;
-
 import com.java.website.myblog.controller.common.Constants;
 import com.java.website.myblog.entity.BlogConfig;
 import com.java.website.myblog.interceptor.AdminLoginInterceptor;

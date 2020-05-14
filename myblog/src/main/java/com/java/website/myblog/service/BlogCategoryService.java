@@ -25,4 +25,5 @@ public interface BlogCategoryService {
 
     int getTotalCategories();
 
+
 }

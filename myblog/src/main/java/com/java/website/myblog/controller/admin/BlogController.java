@@ -34,6 +34,7 @@ public class BlogController {
     @Resource
     private BlogCategoryService blogCategoryService;
 
+
     @GetMapping("/blogs")
     public String list(HttpServletRequest request){
         request.setAttribute("path","blogs");

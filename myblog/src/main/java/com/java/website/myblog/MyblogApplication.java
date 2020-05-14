@@ -26,6 +26,10 @@ public class MyblogApplication extends SpringBootServletInitializer {
         return builder.sources(MyblogApplication.class);
     }
 
+    /**
+     * 重定向80到443 http to https
+     * @return
+     */
     @Bean
     public TomcatServletWebServerFactory servletContainer() {
         TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
@@ -43,6 +47,10 @@ public class MyblogApplication extends SpringBootServletInitializer {
         return tomcat;
     }
 
+    /**
+     * 重定向80到443 http to https
+     * @return
+     */
     @Bean
     public Connector httpConnector() {
         Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");

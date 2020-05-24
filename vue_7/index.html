@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div id="app" v-cloak>
+    <p>总数：{{ total }}</p>
+    <my-component v-model="total"></my-component>
+    <button @click="handleReduce">-1</button>
+    <my-component1 message="来自父组件的数据"></my-component1>
+</div>
+<script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+<script>
+    Vue.component('my-component',{
+        props: ['abc'],
+        template:'<input :value="abc" @input="updateValue">',
+        methods: {
+            updateValue: function (event) {
+                this.$emit('input', event.target.value);
+
+            }
+        }
+    });
+    Vue.component('my-component1',{
+        props: ['message'],
+        template:'<div>{{message}}</div>'
+    });
+    var app=new Vue({
+        el:'#app',
+        data:{
+            total:0
+        },
+        methods: {
+            handleReduce: function () {
+                this.total--;
+
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

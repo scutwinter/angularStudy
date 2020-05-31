@@ -37,6 +37,7 @@ Vue.component('tabs',{
             return flag;
         },
         deleteTabs:function(e,index){
+            console.log(typeof e);
             if(this.navList.length<2) return;
             if(index>0) {
                 console.log(e.target);

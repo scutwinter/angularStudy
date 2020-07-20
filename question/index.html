@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app" v-cloak>
+    <child-component :step="step" :picked="picked" :checked="checked" @clicknext="getPage" @clickpre="getPage">
+        <div v-show="step==0">
+            <p style="white-space: pre">1.请问您的性别是：</p>
+            <input type="radio" v-model="picked" value="boy" id="boy"></input>
+            <label for="boy">男</label>
+            <input type="radio" v-model="picked" value="girl" id="girl"></input>
+            <label for="girl">女</label>
+            <input type="radio" v-model="picked" value="secret" id="secret"></input>
+            <label for="secret">保密</label>
+        </div>
+
+        <div v-show="step==1">
+            <p style="white-space: pre">2.请选择您的兴趣爱好：</p>
+            <input type="checkbox" v-model="checked" value="book" id="book"></input>
+            <label for="book">看书</label>
+            <input type="checkbox" v-model="checked" value="swim" id="swim"></input>
+            <label for="swim">游泳</label>
+            <input type="checkbox" v-model="checked" value="run" id="run"></input>
+            <label for="run">跑步</label>
+            <input type="checkbox" v-model="checked" value="movie" id="movie"></input>
+            <label for="movie">看电影</label>
+            <input type="checkbox" v-model="checked" value="music" id="music"></input>
+            <label for="music">听音乐</label>
+        </div>
+
+        <div v-show="step==2">
+            <p style="white-space: pre">3.请介绍一下自己：</p>
+            <textarea v-model="text" placeholder="不少于100字"></textarea>
+        </div>
+    </child-component>
+
+
+</div>
+<script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+<script src="index.js"></script>
+</body>
+</html>

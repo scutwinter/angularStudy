@@ -4,7 +4,7 @@ Vue.component('child-component',{
     <slot></slot>\
     <br>\
     <button @click="handleNext" v-show="step<2" :disabled="bDisabled">下一步</button>\
-    <button @click="handlePre" v-show="step>0">上一步</button>\
+    <button @click="handlePre" v-show="istep>0">上一步</button>\
     <button>重置</button>\
     </div>',
     data:function(){

@@ -6,7 +6,7 @@
 </head>
 <body>
 <div id="app" v-cloak>
-    <child-component :step="step" :picked="picked" :checked="checked" @clicknext="getPage" @clickpre="getPage">
+    <child-component :istep="step" :picked="picked" :checked="checked" @clicknext="getPage" @clickpre="getPage">
         <div v-show="step==0">
             <p style="white-space: pre">1.请问您的性别是：</p>
             <input type="radio" v-model="picked" value="boy" id="boy"></input>

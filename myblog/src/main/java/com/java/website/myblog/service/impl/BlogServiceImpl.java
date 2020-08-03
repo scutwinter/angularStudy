@@ -254,9 +254,9 @@ public class BlogServiceImpl implements BlogService {
         params.put("limit", 8);
         params.put("blogStatus",1);
         PageUtil pageUtil=new PageUtil(params);
-        List<Blog> blogs=blogDao.findBlogList(params);
+        List<Blog> blogs=blogDao.findBlogList(pageUtil);
         List<BlogListVo> blogListVos=getBlogListVOsByBlogs(blogs);
-        int total=blogDao.getTotalBlogs(params);
+        int total=blogDao.getTotalBlogs(pageUtil);
         PageResult pageResult = new PageResult(blogListVos,total,pageUtil.getLimit(),pageUtil.getPage());
         return pageResult;
     }

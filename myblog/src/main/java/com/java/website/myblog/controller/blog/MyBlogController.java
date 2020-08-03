@@ -40,7 +40,7 @@ public class MyBlogController {
         return this.page(request,1);
     }
 
-    @GetMapping({"/page/{pageNum"})
+    @GetMapping({"/page/{pageNum}"})
     public String page(HttpServletRequest request, @PathVariable("pageNum") int pageNum){
         PageResult blogPageResult = blogService.getBlogsForIndexPage(pageNum);
         if(blogPageResult ==null ){
